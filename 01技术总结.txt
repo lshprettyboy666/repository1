@@ -1,0 +1,2645 @@
+---------------------------------windos快捷键---------------------------------------
+windos键+D   快速切换回桌面
+
+
+
+---------------windows平台添加hosts映射信息-------------------------------
+
+# C:\Windows\System32\drivers\etc\hosts   
+
+192.168.88.80 hadoop01 hadoop01.itcast.cn
+192.168.88.81 hadoop02 hadoop02.itcast.cn
+
+
+
+
+
+
+
+
+
+
+
+--------------------------Linux--------------------------------------------------
+ifconfig  查看IP
+
+
+# ls命令, 作用: 查看路径下的文件 和 文件夹的. 来源于: list(列表)
+# 格式: ls [-alh] [Linux的目录路径]
+# 示例
+ls           # 查看当前路径下的文件 或 目录(文件夹)
+ls /         # 查看指定目录下的 文件或目录, 这里是 查看根目录
+ls /root     # 查看/root路径下的文件或目录
+ls -al       # 以列表的方式查看指定目录下文件或者目录, 包括隐藏文件.
+ll /root     # 以列表的方式显示/root下的内容.
+ll -h /      # 以人性化(智能)的方式查看指定目录下的内容, 这里是根目录(/)
+
+
+# cd命令, 作用: 切换目录的. 来源于: Change Directory改变目录.
+cd ~		 # 切换到当前账号的 家目录.  root账号是: /root, 其它账号是: /home/账号名
+cd 路径		# 切换到指定的目录下. 
+cd .. 	     # 返回上一级, 多级目录的话, 可以写: ../../../
+cd -		 # 在最近的两个路径之间切换.
+
+# 几个特殊的路径写法
+./			# 代表当前目录
+../			# 代表上一级
+~			# 回家
+
+# pwd命令, 作用: 查看当前路径, 来源于: Print Work Directory, 打印工作目录.
+pwd			 # 常看当前目录
+
+
+# mkdir命令, 作用: 创建目录(文件夹), 来源于: Make Directory制作文件夹.
+mkdir /aa				# 在根目录/下创建 aa文件夹
+mkdir /aa/bb/cc			# 创建多级文件夹, 因为 bb和cc都不存在, 所以报错(只能创建单级文件夹)
+mkdir -p /aa/bb/cc		# 加上-p以后, 就可以创建多级文件夹了.
+
+# touch命令, 作用: 创建空文件的.
+touch 1.txt 2.avi 3.jpg		# 同时创建3个(空)文件, 可以是任意后缀名.
+
+# cat命令, 作用: 查看文件内容的(全部展示), 但是因为会自动翻页, 只会显示最后一部分(页)的内容.
+cat 1.txt 					# 查看文件(全部)内容
+
+# more命令, 作用: 分页查看文件内容.
+more 1.txt					# 查看文件内容, 可以分页查看. 
+
+# cp命令, 作用: 拷贝, 来源于: copy单词
+cp 1.txt ./aa/
+
+# scp命令 远程拷贝给其他机器
+scp core-site.xml node2:/root.....   
+
+
+# mv命令, 作用: 剪切, 来源于: move单词
+mv 1.txt 2.txt		# 改名
+mv 1.txt ./aa/		# 剪切
+
+# rm命令, 作用: 删除, 来源于: remove, 还有recursive(递归), force(强制)
+rm -rf 要删除的文件或者目录路径
+
+# which命令, 作用: 查找Linux命令所在的目录.
+which cd
+
+# find命令, 作用: 查找符合条件的文件 或者 目录.
+find 目录地址 -name '查找条件'		# 根据文件名查找.
+find 目录地址 -size +100M		   # 根据大小查找指定目录下的 满足条件的文件或者目录路径.
+
+# grep命令, 作用: 从文件中过滤出指定的信息. 
+# 格式
+	grep '关键字' 要被检索的文件夹路径.  
+	
+# 例如: 
+	grep 'hello' 1.txt			# 查找指定内容
+	grep  -n'hello' 1.txt		# 作用同上, 显示行号.
+	
+# wc命令, 作用: 词频统计(统计单词的数量)的. 
+# 格式: wc [-lwmc] 文件路径
+
+# 选项的几组参数解释:
+	wc -l ./1.txct	# 行数
+	wc -w ./1.txct	# 单词数
+	wc -m ./1.txct	# 字符数, 无论是中文字符, 还是英文, 数字, 符号字符, 都算1个字符.
+	wc -c ./1.txt	# 字节数, 注意: UTF8码表, 1个中文占3个字节, GBK码表, 1个中文占2个字节.
+	
+# | 管道命令, 作用: 把前边的执行结果, 当做后边的数据集.
+cat 1.txt | wc -l		# 查看1.txt文件内容, 并统计行数.
+
+
+
+--------------------vim编辑器使用-------------------------------------------------
+快速体验
+使用：vim hello.txt，编辑一个新文件，执行后进入的是命令模式
+在命令模式内，按键盘 i ，进入输入模式
+在输入模式内输入：itheima and itcast.
+输入完成后，按esc回退会命令模式
+在底线命令内输入：wq，保存文件并退出vi编辑器
+在命令模式内，按键盘 : ，进入底线命令模式
+
+
+
+---------------------2.Linux--tail,head,重定向,echo----------------------------------------------------------
+# echo命令, 作用: 用于输出内容到控制台的, 类似于Python的 print()
+echo 'hello'
+echo 123
+
+# 反引号, 作用: 把包裹起来的内容, 当做Linux命令来执行.
+echo pwd		# 输出pwd
+echo `pwd`		# 输出 pwd对应的指定结果, 即: 当前路径.
+
+# tail, 作用: 查看文件末尾n行数据的, 一般用于动态查看日志.
+tail -100f 文件路径				# 不写的话, 默认是: 10行.
+	
+# head, 作用: 用于查看文件前n行内容的.
+head -n 数字(代表行数) 文件路径	# 不写的话, 默认是: 10行.
+
+# 重定向, 作用: 用于追加 或者 覆盖内容到 文件中.  >表示覆盖写入, >>表示追加写入
+echo 'hello' > 1.txt
+echo 'hello' >> 1.txt
+
+
+
+------------------Linux的软件安装------------------------------------------------
+yum -y [install | remove | search] 要安装的包名 	# -y的意思是: 不询问, 直接同意
+
+
+
+
+----------------------11.Linux命令--systemctl---------------------------------------
+# systemctl命令, 作用: 用来开启 或者 关闭某些服务的.
+# 格式
+systemctl start | stop | status | enable | disable | restart 服务名
+          开启    关闭  查看状态 开机自起 关闭开机自启 重启
+
+
+# 例如
+systemctl restart network		# 重启网络服务
+systemctl stop firewalld		# 关闭防火墙
+
+# 一个小问题, 我的虚拟机IP啥的都好好的, 突然有一天IP地址变成了127.0.0.1, 怎么办?
+产生原因: 主网络服务(NetworkManager开启了)
+解决方案: 禁用主网络服务,  关闭主网络服务的开机自启, 重启副网络服务
+systemctl stop NetworkManager
+systemctl disable NetworkManager
+systemctl restart network
+
+
+
+---------------------------12.Linux命令--软连接---------------------------------------
+# ln命令, 作用: 创建软连接 或者 硬链接的.
+# 格式
+ln [-s] 要链接的文件或者目录 快捷方式		# 可选项, 不写就是硬链接.
+
+# 软连接案例
+ln -s /etc/sysconfig/network-scripts/ifcfg-ens33 ip
+
+# 硬链接案例
+# 硬链接的目的是: 相当于备份, 为了提高容错, 且硬链接的文件, 内容会实时同步
+
+
+
+
+--------------------------Linux命令--时间相关---------------------------------------------
+# 获取当前时间.
+date
+
+# 指定时间格式
+date +'%Y/%m/%d %H:%M:%S'  # year, month, day, hour, minute, second
+
+# 指定偏移量.
+date -d '1 days' +'%Y/%m/%d'		# 往后推1天, 格式为: 2023/05/11
+date -d '-1 days' +'%Y/%m/%d'		# 往前推1天, 格式为: 2023/05/09
+date -d '1 days ago' +'%Y/%m/%d'	# 往前推1天, 格式为: 2023/05/09
+
+# 手动设置时间
+date -s '2021-01-01 13:14:21'
+
+# 校验时间
+# 方式1: 手动校验1次
+ntpdate -u ntp.aliyun.com
+
+# 方式2: 开启ntpd服务, 自动校验(间隔1分钟)
+yum -y install ntp
+systemctl start ntpd
+systemctl enable ntpd
+systemctl status ntpd
+
+
+-----------------------14.Linux命令--主机名,ip,域名映射----------------------------------
+IP地址解释:
+	概述:
+		它表示设备在网络中的唯一标识.
+	命令:
+    	ifconfig		# 查看本机ip
+    	
+# 主机名相关
+hostname
+
+vim /etc/hostname				  # 修改主机名, 重启虚拟机有效
+hostnamectl set-hostname 主机名	# 立即生效.
+
+# 域名映射
+# 解释: 就是通过字符串来查找对应的Ip地址, 就叫: 域名映射(域名解析)
+# 流程: 
+1. 先去文件(hosts文件, windows系统, Linux系统都有)中找.
+2. 再去公共DNS服务器(8.8.8.8, 114.114.114.114)找.
+3. 都找不到就报错.
+
+# 配置域名解析.
+# Linux系统
+vim /etc/hosts
+
+#windows系统
+windows的 C:\windows\system32\drivers\etc\hosts 
+
+# 不要删除文件中的内容, 在最后加入如下的内容, 保存退出即可.
+192.168.88.161 node1 node1.itcast.cn
+192.168.88.162 node2 node2.itcast.cn
+192.168.88.163 node3 node3.itcast.cn
+
+# windows系统
+# 路径: C:\Windows\System32\drivers\etc\hosts文件
+# 在文件最后加入如下内容, 重启windows系统有效.
+192.168.88.161 node1 node1.itcast.cn
+192.168.88.162 node2 node2.itcast.cn
+192.168.88.163 node3 node3.itcast.cn
+
+# 测试是否设置成功
+ping node1
+ping node1.itcast.cn
+
+
+
+
+------------------------------Linux命令--ping,wget,curl------------------------------
+# ping命令, 测试网络连接的
+ping www.baidu.com
+
+# wget命令, 根据url地址, 下载资源的
+wget https://archive.apache.org/dist/hadoop/common/hadoop-3.3.0/hadoop-3.3.0.tar.gz
+
+# curl命令, 模拟浏览器的http请求, 访问URL, 获取结果(网页源码)
+curl python.itheima.com
+
+
+--------------------------Linux命令--端口号介绍---------------------------------------
+# 网络通信三要素: Ip地址, 端口号, 协议.
+# Ip地址: 设备(例如: 电脑, 手机, 平板...)在网络中的唯一标识.
+# 端口号: 程序在设备上的唯一标识, 范围是0 ~ 65535
+	   # 其中 0 ~ 1023之间不要用, 因为已经被系统占用 或者 用作保留端口.
+# 协议: 通信规则, 主要有: UDP协议, TCP协议.
+
+# 查看端口号是否被占用
+netstat -anp | grep 端口号		# 例如: SSH协议底层是 22, MySQL端口号是 3306
+
+
+
+
+-----------------------Linux命令--进程管理---------------------------------------------
+概述介绍:
+	进程: 指的是可执行程序,文件.(例如: *.exe)
+		# 可以理解为: 车
+	线程: 指的是进程的执行路径(执行单元)
+		# 可以理解为: 车道.
+	多线程: 指的是进程有多条执行路径.
+		# 可以理解为: 多车道.
+
+# 相关命令
+ps -ef		# 查看本机所有的进程.
+kill -9 pid # 根据pid强制杀死进程及其子进程. 
+
+
+
+-----------------------Linux命令--df,free-------------------------
+# df命令, 查看磁盘空间使用情况, 来源于: disk free
+df -h
+
+# free命令, 查看内存使用情况.
+free		# swap是交换空间, 就是从磁盘上行借调一部分空间充当临时内存用. 
+
+
+
+-----------------------linux快捷命令------------------------------------
+1. ctrl + c 强制停止
+2. ctrl + d 退出登出
+3. history 查看历史命令
+4. !命令前缀，自动匹配上一个命令
+5. ctrl + r，搜索历史命令
+6. ctrl + a | e，光标移动到命令开始或结束
+7. ctrl + ← | →，左右跳单词
+8. ctrl + l 或 clear命令 清屏
+9. 命令 --help    查看命令参数，帮助学习命令
+10.ctrl + d 切换上一个用户
+
+-------------------Linux环境变量-----------------------------------------------
+env命令即可查看当前系统中记录的环境变量
+通过$符号，可以取出环境变量的值 比如： echo $PATH
+
+Linux环境变量可以用户自行设置，其中分为：
+# 如何手动配置环境变量?
+# 方式1: 临时变量.
+export 变量名=变量值
+
+# 方式2: 永久配置.
+vim /etc/profile		# Linux的Path环境变量都是在这里配置的.
+# 加入环境变量即可
+source /etc/profile		# 刷新之后生效, 或者重启虚拟机.
+
+
+------------------Linux 上传 下载 压缩 解压-----------------------------------------
+2. rz、sz命令
+通过 yum -y install lrzsz可以安装此命令
+rz进行文件上传
+sz 文件，进行文件下载
+
+
+
+
+
+1. Linux系统常用的压缩格式有：
+tar格式，归档文件，简单的将文件整合到一个文件内，无压缩效果
+gzip格式，gzip压缩文件，不仅能整合到一个文件，同时有体积压缩效果
+2. tar命令
+tar [-z -x -v -c -f -C] 参数...
+-c，创建压缩文件、-v，查看压缩\解压过程、-x，解压模式
+-f，指定压缩\解压的文件，-z，gzip模式，-C，指定解压的路径
+-z在选项组建议在开头，-f在选项组内必须在尾部，-C单独使用
+
+tar 压缩
+tar的常用组合为：
+tar -cvf test.tar 1.txt 2.txt 3.txt
+将1.txt 2.txt 3.txt 压缩到test.tar文件内
+tar -zcvf test.tar.gz 1.txt 2.txt 3.txt
+将1.txt 2.txt 3.txt 压缩到test.tar.gz文件内，使用gzip模式
+
+注意：
+-z选项如果使用的话，一般处于选项位第一个
+-f选项，必须在选项位最后一个
+
+tar 解压
+常用的tar解压组合有
+tar -xvf test.tar
+解压test.tar，将文件解压至当前目录
+tar -xvf test.tar -C /home/itheima
+解压test.tar，将文件解压至指定目录（/home/itheima）
+tar -zxvf test.tar.gz -C /home/itheima
+以gzip模式解压test.tar.gz，将文件解压至指定目录（/home/itheima）
+
+注意：
+-f选项，必须在选项组合体的最后一位
+-z选项，建议在开头位置
+-C选项单独使用，和解压所需的其它参数分开
+
+
+
+3. zip命令
+zip [-r] 参数...
+-r，压缩文件夹使用
+
+示例：
+zip test.zip a.txt b.txt c.txt
+将a.txt b.txt c.txt 压缩到test.zip文件内
+zip -r test.zip test itheima a.txt
+将test、itheima两个文件夹和a.txt文件，压缩到test.zip文件内
+
+
+
+
+4. unzip命令
+unzip [-d] 参数
+-d，指定解压去的目录
+
+示例：
+unzip test.zip，将test.zip解压到当前目录
+unzip test.zip -d /home/itheima，将test.zip解压到指定文件夹内（/home/itheima）
+
+
+-------------------------------linux Linux用户和权限---------------------------------------
+语法：su [-] [用户名]
+- 符号是可选的，表示是否在切换用户后加载环境变量（后续讲解），建议带上
+参数：用户名，表示要切换的用户，用户名也可以省略，省略表示切换到root
+切换用户后，可以通过exit命令退回上一个用户，也可以使用快捷键：ctrl + d
+
+使用普通用户，切换到其它用户需要输入密码，如切换到root用户
+使用root用户切换到其它用户，无需密码，可以直接切换
+
+
+
+语法：sudo 其他命令
+在其它命令之前，带上sudo，即可为这一条命令临时赋予root授权
+但是并不是所有的用户，都有权利使用sudo，我们需要为普通用户配置sudo认证
+
+
+
+-----------为普通用户配置sudo认证：
+切换到root用户，执行visudo命令，会自动通过vi编辑器打开：/etc/sudoers
+在文件的最后添加：用户名 ALL =（ALL）   NOPASSWD:ALL
+
+其中最后的NOPASSWD:ALL 表示使用sudo命令，无需输入密码
+最后通过 wq 保存
+
+切换回普通用户
+
+
+执行的命令，均以root运行
+
+
+
+------------------用户组管理：
+以下命令需root用户执行
+创建用户组
+groupadd 用户组名
+查看用户组
+cat /etc/group
+删除用户组
+groupdel 用户组名
+修改用户组
+chgrp 用户组名  指定文件或目录
+
+使用getent命令，同样可以查看当前系统中有哪些用户组
+语法：getent group
+
+
+
+----------------------用户管理
+以下命令需root用户执行
+创建用户
+useradd [-g -d] 用户名
+选项：-g指定用户的组，不指定-g，会创建同名组并自动加入，指定-g需要组已经存在，如已存在同名组，必须使用-g
+选项：-d指定用户HOME路径，不指定，HOME目录默认在：/home/用户名
+删除用户
+userdel [-r] 用户名
+选项：-r，删除用户的HOME目录，不使用-r，删除用户时，HOME目录保留
+查看用户所属组
+id [用户名]
+参数：用户名，被查看的用户，如果不提供则查看自身
+添加用户到指定组
+usermod -aG 用户组 用户名，将指定用户加入指定用户组
+
+
+
+------------rwx文件权限
+r表示读权限
+w表示写权限
+x表示执行权限
+
+针对文件、文件夹的不同，rwx的含义有细微差别
+r，针对文件可以查看文件内容
+针对文件夹，可以查看文件夹内容，如ls命令
+
+w，针对文件表示可以修改此文件
+针对文件夹，可以在文件夹内：创建、删除、改名等操作
+
+x，针对文件表示可以将文件作为程序执行
+针对文件夹，表示可以更改工作目录到此文件夹，即cd进入
+
+
+------------------chmod命令
+我们可以使用chmod命令，修改文件、文件夹的权限信息。
+注意，只有文件、文件夹的所属用户或root用户可以修改。
+语法：chmod -R 权限 文件或文件夹
+选项：-R，对文件夹内的全部内容应用同样的操作
+
+示例：
+chmod u=rwx,g=rx,o=x hello.txt ，将文件权限修改为：rwxr-x--x
+其中：u表示user所属用户权限，g表示group组权限，o表示other其它用户权限
+chmod -R u=rwx,g=rx,o=x test，将文件夹test以及文件夹内全部内容权限设置为：rwxr-x--x
+除此之外，还有快捷写法：chmod 751 hello.txt
+将hello.txt的权限修改为751
+那么问题来了，751表示什么意思呢？
+
+
+
+--------------权限的数字序号
+权限可以用3位数字来代表，第一位数字表示用户权限，第二位表示用户组权限，第三位表示其它用户权限。
+数字的细节如下：r记为4，w记为2，x记为1，可以有：
+0：无任何权限，	即 ---
+1：仅有x权限，	即 --x
+2：仅有w权限	即 -w-
+3：有w和x权限	即 -wx
+4：仅有r权限	即 r--
+5：有r和x权限	即 r-x
+6：有r和w权限	即 rw-
+7：有全部权限	即 rwx
+所以751表示： rwx(7) r-x(5) --x(1)
+
+
+------------------------chown命令
+使用chown命令，可以修改文件、文件夹的所属用户和用户组
+普通用户无法修改所属为其它用户或组，所以此命令只适用于root用户执行
+语法：chown -R [用户名]:[用户组名] 文件或者文件夹
+选项，-R，同chmod，对文件夹内全部内容应用相同规则
+选项，用户，修改所属用户
+选项，用户组，修改所属用户组
+:用于分隔用户和用户组
+示例：
+chown root hello.txt，将hello.txt所属用户修改为root
+chown :root hello.txt，将hello.txt所属用户组修改为root
+chown root:itheima hello.txt，将hello.txt所属用户修改为root，用户组修改为itheima
+chown -R root test，将文件夹test的所属用户修改为root并对文件夹内全部内容应用同样规则
+
+
+-----------------------------shell脚本---------------------------------------------
+''' 注意！！！！！！！！
+用notepad++写shell脚本时，一定要用\n替换掉\r\n
+'''
+Shell--字符串操作   结论: 以后定义字符串, 尽量使用双引号. 比如：name="jdcunjndshvhdh djuvjhj"      echo ${name}
+
+Shell--反引号的作用  
+# echo `date`			# 如果要执行Linux中的函数或者命令, 则: 用反引号包裹或者用$(命令或者函数)
+# echo $(date)         
+
+
+#!/bin/bash   shell 脚本第一行必须用这个来指定解析器
+
+
+-------------------# 如何运行Shell脚本呢? -----------------------------------
+
+1. sh 脚本名.sh		# 官方推荐,  不需要对Linux脚本有执行权.
+2. source 脚本名.sh	# 野路子写法, 不需要对Linux脚本有执行权.
+3. 相对路径.	./1.sh 	   # 必须对Linux脚本有执行权.
+4. 绝对路径.	 /root/1.sh 	   # 必须对Linux脚本有执行权.
+
+# chmod +x 1.sh  相对路径和绝对路径的方式需要给对应文件加上可执行权
+                 
+
+
+
+-------------------------------在shell脚本中执行MySQL脚本-------------------------------------
+mysql -u 用户名 -p密码 数据库名（可以不用） < 文件名.sql
+脚本实例：
+#!/bin/bash
+/usr/bin/mysql -uroot -p123456 < /mycode/create_rpt_db.sql
+
+
+注意！！！！！！！！自动化调度时，shell脚本和sql脚本不要放在虚拟机/root目录下
+（因为/root目录只有root账户有权限，OOzie等自动化调度程序没有权限，并且文件满权限chmod +777 文件名）
+
+
+
+----------------在shell中执行hive sql脚本的方式有两种-------------------------------
+
+bin/hive -e ‘sql语句’
+
+bin/hive -f  xxx.sql文件
+
+脚本实例：
+#! /bin/bash
+HIVE_HOME=/usr/bin/hive
+
+#上个月1日
+Last_Month_DATE=$(date -d "-1 month" +%Y-%m-01)
+
+
+${HIVE_HOME} -S -e "
+--分区配置
+SET hive.exec.dynamic.partition=true;
+SET hive.exec.dynamic.partition.mode=nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=10000;
+set hive.exec.max.dynamic.partitions=100000;
+set hive.exec.max.created.files=150000;
+
+--=======订单宽表=======
+--增量插入
+insert overwrite table yp_dwb.dwb_order_detail partition (dt)
+select
+	xxxxxx
+-- 读取上个月1日至今的数据
+SUBSTRING(o.create_date,1,10) >= '${Last_Month_DATE}' and o.start_date >= '${Last_Month_DATE}';
+
+
+
+
+------------------------Presto的sql如何在shell脚本中执行-------------------------------
+
+脚本实例1：
+#! /bin/bash
+#昨天
+if [[ $1 == "" ]];then
+   TD_DATE=`date -d '1 days ago' "+%Y-%m-%d"`
+else
+   TD_DATE=$1
+fi
+
+PRESTO_HOME=/export/server/presto/bin/presto
+
+
+${PRESTO_HOME} --catalog hive \
+--server 192.168.88.80:8090 \
+--execute "
+delete from yp_rpt.rpt_sale_store_cnt_month where date_time = '${TD_DATE}';
+.......
+"    
+
+
+-------
+脚本实例2：
+#!/bin/bash
+# run_presto_query.sh
+
+# 定义 Presto 客户端路径（根据你的环境调整）
+PRESTO_CLI="/export/server/presto/bin/presto"
+
+# 定义服务器地址（根据你的环境调整）
+SERVER_URL="http://your-presto-coordinator:8080"  比如192.168.88.80:8090
+
+# 执行 SQL 文件
+$PRESTO_CLI --server $SERVER_URL \
+            --catalog hive \   比如是hive还是mysql
+            --schema yp_rpt \     是否指定数据库
+			--execute " select * from ***" \   是sql 就用这份
+            --file /mycode/create_rpt_db    是脚本 就用这个
+
+
+
+
+------------
+脚本实例3（自己项目）：
+#!/bin/bash
+# 昨天
+if [[ $1 == "" ]];then
+   TD_DATE=`date -d '1 days ago' "+%Y-%m-%d"`
+else
+   TD_DATE=$1
+fi
+
+PRESTO_HOME=/export/server/presto/bin/presto
+${PRESTO_HOME} --catalog hive \
+               --server 192.168.88.80:8090 \
+			   #--schema yp_rpt
+			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
+			   --file /mycode/insert_rpt_sale.sql
+			   
+			   
+${PRESTO_HOME} --catalog hive \
+               --server 192.168.88.80:8090 \
+			   #--schema yp_rpt
+			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
+			   --file /mycode/insert_rpt_sku.sql
+			   
+			   
+${PRESTO_HOME} --catalog hive \
+               --server 192.168.88.80:8090 \
+			   #--schema yp_rpt
+			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
+			   --file /mycode/insert_rpt_user.sql
+
+
+
+
+
+
+
+------------------------------#Shell脚本动态传参---------------------------
+脚本用法：
+sh s1.sh 动态参数1  动态参数2 动态参数3 ..........
+解释：
+sh 文件绝对路径（文件名） 动态参数1  动态参数2 动态参数3 ..........
+
+
+例子如下：s1.sh
+#!/bin/bash
+
+# 定义一些变量, 分别记录姓名, 年龄, 性别
+name='刘亦菲'
+age=33
+gender='女'
+
+# 输出上述的内容
+echo "你好, 我叫$name, 今年$age岁了, 我的性别是$gender"
+
+echo ''
+
+# 如下是和动态传参相关的内容
+echo "当前的文件名是: $0"
+echo "接收到的参数总个数为: $#"
+echo "接收到的所有参数为: $*"
+echo "第1个参数值为: $1"
+echo "第2个参数值为: $2"
+echo "第3个参数值为: $3"
+
+
+
+
+'''
+--------Shell-if语句入门-----------------------------------------------------
+概述:
+	Shell提供了丰富的语句判断方式，包括数字，字符串和文件。
+语句判断相关, 具体如下:
+    数字：
+        运算符			说明
+        -eq			检测两个数是否相等，相等返回 true。
+        -ne			检测两个数是否不相等，不相等返回 true。
+        -gt			检测左边的数是否大于右边的，如果是，则返回 true。
+        -lt			检测左边的数是否小于右边的，如果是，则返回 true。
+        -ge			检测左边的数是否大于等于右边的，如果是，则返回 true。
+        -le			检测左边的数是否小于等于右边的，如果是，则返回 true。
+
+	字符串:
+        判断符			说明
+        -n 			STRING	字符串长度不为零
+        -z 			STRING	字符串长度为0
+        = 			判断两个字符串是否一样
+        != 			判断两个字符串是否不一样
+
+	文件
+        判断符			说明
+        -f			存在且是普通文件
+        -d			存在且是目录
+        -h			存在且是符号链接 
+        -e			文件存在 
+        –r			文件存在并且可读
+        –w			文件存在并且可写
+        –x			文件存在并且可执行
+--------------------------格式：---------------------------------------------
+if语句
+    if 语句语法格式：
+        if [空格condition空格]	//条件, 条件要用 [空格   空格] 包裹.   []里面前后一定要有空格
+        then
+            command1 	//符合条件后, 就会执行这里的内容
+            command2
+            ...
+            commandN 
+        fi
+
+注意: 不允许将以上格式 写成一行.
+
+----------------------------------------------------------------------------------
+
+
+
+# 案例
+案例1: 判断当前系统是否有多个ssh进程，如果有则打印true
+test1.sh	//这是SHELL脚本文件, 以下是里边的内容. 
+#!/bin/bash
+if [ $(ps -ef | grep -c "ssh") -gt 1 ]		//这里的-c就是count的意思, 即: 统计个数的.					
+then 
+	echo "true" 
+fi
+
+//上述的if也可以改成: if [ `ps -ef | grep -c "ssh"` -gt 1 ]  这种写法.
+
+案例2: 判断/media/cdrom目录是否存在，若不存在就去创建这个目录
+test2.sh	//这是SHELL脚本文件, 以下是里边的内容. 
+#!/bin/bash 
+DIR="/media/cdrom" 
+if [ ! -d $DIR ] 
+then 
+	mkdir -p $DIR 
+fi
+
+
+--------------------------------------Shell--if-else语句-------------------------------------------------
+
+if else 语法格式：
+    if [空格condition空格]	//条件, 用[]包裹
+    then
+        command1	//符合条件后, 执行的内容
+        command2
+        ...
+        commandN
+    else
+    	command		//不符合条件后, 执行的内容. 
+    fi
+ ---------------------------------------------------------------------------------------
+
+ 
+# 案例3: 根据年龄判断是否成年
+#!/bin/bash
+
+# 案例3: 根据年龄判断是否成年
+# 1. 提示用户录入他/她的年龄, 并接收.
+read -p "请录入您的年龄: " age
+
+# 2. 判断年龄是否 大于等于 18, 满足条件即为: 成年.
+if [ $age -ge 18 ]
+then
+	echo '恭喜您, 成年了, 可以上网了!'
+else
+	# 3. 走这里是未成年, 进行相应的提示即可.
+	echo '小屁孩儿, 滚回去学习!'
+fi
+
+---------------------------Shell--if语句结合test语法-----------------------
+#!/bin/bash
+
+# 案例3: 根据年龄判断是否成年
+# 1. 提示用户录入他/她的年龄, 并接收.
+read -p "请录入您的年龄: " age
+
+# 2. 判断年龄是否 大于等于 18, 满足条件即为: 成年.
+# if格式1:  if [ 条件表达式 ]
+# if [ $age -ge 18 ]
+
+# if格式2:  if test 条件表达式
+if test $age -ge 18
+then
+	echo '恭喜您, 成年了, 可以上网了!'
+else
+	# 3. 走这里是未成年, 进行相应的提示即可.
+	echo '小屁孩儿, 滚回去学习!'
+fi
+
+-----------------------------14.Shell--if-else if语句----------------------------------------------------------
+if else-if else 语法格式：
+    if condition1		# 条件1
+    then
+    	command1		# 满足条件1后, 执行的内容
+    elif condition2 	# 条件2
+    then 
+    	command2		# 满足条件2后, 执行的内容
+    else
+    	commandN		# 所有条件都不满足, 则执行这里.
+    fi
+    
+# 需求4: 判断两个变量是否相等
+#!/bin/bash
+
+# 需求4: 判断两个变量是否相等
+# 1. 提示用户录入两个数字, 并分别接收.
+# 接收用户录入的内容, 写法1: 分解版.
+echo "请录入第1个整数: "
+read a
+
+# 接收用户录入的内容, 写法2: 合并版.
+read -p "请录入第2个整数: " b
+
+
+# 2. 判断两个数字是否相等, 并打印对应的结果.
+if test $a -eq $b
+then
+	echo "$a 和 $b 相等"
+elif test $a -gt $b
+then
+	echo "$a 比 $b 大"
+else
+	echo "$a 比 $b 小"
+fi
+
+
+------------------------------Shell--for循环讲解-------------------------------------
+# for格式1: 字符型循环.
+格式:
+    for 变量 in 值1 值2 值3…
+    do
+    	程序
+    done
+解释:
+    当变量值在列表里，for循环即执行一次所有命令，使用变量名获取列表中的当前取值。
+    命令可为任何有效的shell命令和语句。in列表可以包含替换、字符串和文件名。
+    in列表是可选的，如果不用它，for循环使用命令行的位置参数。
+示例:
+	#!/bin/bash
+
+    # 案例6: 演示for循环, 字符型循环.
+
+    for i in 11 22 33
+    do
+        echo $i
+    done
+
+# for格式2: 数字型循环.
+格式:
+	for ((初始值；循环控制条件；变量变化))
+	do
+		程序
+	done
+格式解释:
+	初始值:
+		在循环开始时，需要给某个变量赋予初始值，如 i=1。
+	循环控制条件：
+		用于指定变量循环的次数，如 i<=100，则只要 i 的值小于等于 100，循环就会继续。
+	变量变化：
+		每次循环之后，变量该如何变化，如 i=i+1，代表每次循环之后，变量的值都加 1。
+	//语法二和其他语言中的 for 循环类似，也就是事先决定循环次数的固定循环。
+	
+示例:
+	#!/bin/bash
+
+    # 需求:求1-100的和, for版
+
+    # 1. 定义求和变量, 记录求和结果
+    sum=0
+
+    # 2. 获取 1 ~ 100之间所有的整数.
+    for ((i=1; i <= 100; i++ ))
+    do
+        # 3. 依次累加给变量sum
+        # 思路: sum=sum + i
+        # sum=$(($sum + $i))	# 写法1: $(( a + b ))
+        # sum=$[$sum + $i]		# 写法2: $[ a + b ]
+        sum=`expr $sum + $i`	# 写法3: `expr a + b`
+    done
+
+
+    # 4. 打印结果.
+    echo "求和结果为: $sum"
+
+---------------------------------17.Shell--while循环讲解----------------------------------------
+
+# 入门案例
+#!/bin/bash
+
+# 需求: while循环入门, 打印1 ~ 5数字
+
+# 初始化条件
+i=1
+
+# 判断条件
+while (( $i <= 5 ))
+do
+	# 循环体
+	echo $i
+	
+	# 控制条件
+	# i=$(($i + 1))
+	# i=$[$i + 1]
+	# i=`expr $i + 1`
+	let "i++"	# let后边可以跟1个或者多个表达式, 表达式中的变量可以直接写, 不用写$符号了. 
+done
+
+# while求和
+#!/bin/bash
+
+# 需求:求1-100的和, while版
+
+# 1. 定义求和变量, 记录求和结果
+sum=0
+i=1
+
+# 2. 获取 1 ~ 100之间所有的整数.
+while ((i <= 100))
+do
+	# 3. 依次累加给变量sum
+	let sum=sum+i	# 求和
+	let i++			# 自增
+done
+
+
+# 4. 打印结果.
+echo "求和结果为: $sum"
+
+
+--------------------18.Shell--死循环写法---------------------------
+# 死循环解释, 重复执行, 不会自动终止, 一般要结合break和continue一起使用.
+#!/bin/bash
+
+
+# 案例: 演示死循环的写法.
+# 写法1, 推荐.
+while :
+do
+	echo '哈哈, 我来了'
+done
+
+
+# 写法2: while循环的
+# while true
+# do
+# 	echo '哈哈, 我来了'
+# done
+
+
+# 写法3: for循环
+# for ((;;))
+# do
+# 	echo '哈哈, 我来了'
+# done
+
+
+---------------------19.Shell--break和continue--------------------------------
+#!/bin/bash
+
+# 案例: 遍历1-10之间的数字, 如果遇到3的倍数, 就执行 break  或者 continue, 看看会发生什么情况.
+# break: 用于终止循环的, 即: 循环不再执行.
+# continue: 结束本次循环, 进行下次循环的.
+
+# 1. 获取1 ~ 10之间所有的数字.
+for i in 1 2 3 4 5 6 7 8 9 10
+do
+	# 2. 判断是否是3的整数倍.
+	if [ $(($i % 3)) -eq 0 ]; then
+		# 3. 如果是, 就执行break 或者 continue
+		# break
+		continue
+	else
+		# 4. 如果不是, 就正常打印.
+		echo $i
+	
+	fi
+		
+done
+
+
+
+
+
+
+
+
+
+
+'''
+
+------------------------3.HDFS-Shell命令---------------------------------
+# HDFS的Shell命令指的是, 在CRT 或者 Tabby等工具中, 写Shell命令, 操作HDFS文件系统.
+
+# 格式, 如下两种方式, 除了通用性以外, 其它没区别. 
+hadoop fs -命令名 [选项] [参数]		# 更通用, 可以操作多种文件系统.
+hdfs dfs -命令名 [选项] [参数]			# 只能操作HDFS文件系统.
+
+# ls命令, 查看指定目录的(子级)信息的
+hadoop fs -ls /		# 只能查看单级
+hdfs dsf -ls /		# 只能查看单级
+
+hadoop fs -lsr /	# 查看目录的信息(包括所有子集), 已过时, 推荐使用 -ls -R
+
+# mkdir命令, 创建目录的
+hadoop fs -mkdir /aa
+hadoop fs -mkdir -p /aa/bb/cc
+
+# put命令, 把Linux文件上传到HDFS中.
+# 格式: hadoop fs -put Linux文件路径 HDFS目录路径
+hadoop fs -put /root/1.txt /aa/bb/cc
+
+# cat命令, 查看HDFS的文件内容的.
+hadoop fs -cat /aa/bb/cc/1.txt
+
+# get命令, 从HDFS中下载文件到本地(Linux系统)
+# 格式: hadoop fs -get HDFS文件路径 Linux目录路径
+hadoop fs -get /aa/bb/cc/1.txt ./
+
+# mv命令, 剪切, 必须是: HDFS <=> HDFS
+hadoop fs -mv /aa/bb/cc/1.txt /aa/bb/1.txt
+
+# cp命令, 复制, 必须是: HDFS <=> HDFS
+hadoop fs -cp /aa/bb/cc/1.txt /aa/bb/1.txt
+
+# rm命令, 删除.  如果是文件夹, 用-rmr, 但是这个命令已过时, 推荐使用: -rm -r
+hadoop fs -rmr /aa
+
+# appendToFile命令, 它是唯一一个可以修改HDFS文件内容的命令, 即: 把1个文件数据追加到某个文件中.
+# 细节: Linux => HDFS
+# hadoop fs -appendToFile Linux文件路径 HDFS文件路径
+hadoop fs -appendToFile /root/2.txt  /aa/1.txt
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------#开启Hadoop集群.--------------------------
+# 如下的命令是在 node1机器做的.
+start-all.sh					# 启动Hadoop集群, 如果要关闭 用 stop-all.sh
+mr-jobhistory-daemon.sh start historyserver		# 启动历史服务
+'''
+# DataGrip连接Hive底层其实是 beeline的方式, 所以你必须确保集群开启了 
+# Hadoop集群, metastore服务, hiveserver2服务, 即, 以后只要集群一启动, 你就去node1中执行
+start-all.sh						# 开启hadoop集群
+mr-jobhistory-daemon.sh start historyserver		# 启动历史服务
+nohup hive --service metastore &	# 开启metastore服务
+nohup hive --service hiveserver2 &	# 开启hiveserver2服务, 细节: 等1分钟左右
+'''
+
+
+---------------如何查看启动是否成功.----------------
+jps命令, 三台都执行.
+
+
+
+
+
+----------------如何查看HDFS, Yarn, 历史服务的WebUI界面.------------------------
+# HDFS的WebUI界面
+node1:9870			# 如果C盘hosts文件没有配域名映射, 记得写IP 192.168.88.161
+
+# Yarn的WebUI界面
+node1:8088			# 如果C盘hosts文件没有配域名映射, 记得写IP 192.168.88.161
+
+# 历史服务的WebUI界面
+node1:19888			# 如果C盘hosts文件没有配域名映射, 记得写IP 192.168.88.161
+
+
+
+------------------Hive配置----------------------------------------
+# 0. 配置Hive的path环境变量.
+vim /etc/profile
+
+    # 把如下的内容粘贴进去
+    #HIVE_HOME
+    export HIVE_HOME=/export/server/hive
+    export PATH=$PATH:$HIVE_HOME/bin
+:wq 保存退出.
+source /etc/profile		# 刷新配置生效.
+
+-- ------------ hive第1代客户端的作用 hive脚本执行 --------------------------------------------
+/*
+Hive的第1代客户端指的是:  /export/server/hive/bin/hive, 它的作用有四个, 分别是:
+    1. 充当客户端使用, 可以写Hive SQL
+    2. 开启metastore 和 hiveserver2服务.
+        nohup hive --service metastore &
+        nohup hive --service hiveserver2 &
+    3. 可以执行一次Hive SQL语句, 执行结束, 会自动断开会话.
+        hive -e 'HQL语句;'
+    4. 可以执行Hive SQL脚本.
+        Hive SQL脚本解释: 可以是任意后缀名的文件, 文件中的内容必须符合HQL规范, 建议后缀名为 .sql
+        hive -f 'HQL脚本名称'  如 hive -f 1.sql
+*/
+
+-----------------------HDFS的安全模式(Safemode)介绍-----------------------------------------------
+    概述:
+        安全模式是HDFS的一种保护机制, 其特点是: 在安全模式下, 只能读, 不能更新(因为更新会修改元数据)
+    问题: 什么时候会进入到安全模式?
+    答案:
+        情况1: 启动HDFS集群的时候, namenode会去读取Edits文件 和 FsImage文件的元数据信息到内存中, 该过程中会强制进入到安全模式.
+              过程结束(HDFS自检动作没问题), 会自动退出安全模式.
+        情况2: 当datanode的数量 小于 副本数的时候, 会强制进入到安全模式.
+        情况3: 手动进入到安全模式, 一般用于排错.
+    涉及到的命令如下:
+        hdfs dfsadmin -safemode get         查看安全模式的状态, OFF:关, ON:开
+        hdfs dfsadmin -safemode enter       进入到安全模式
+        hdfs dfsadmin -safemode leave       退出安全模式
+
+
+------------------------HDFS的归档(Archive)介绍:-----------------------------------------------------
+    概述:
+        HDFS适用于存储海量的大文件, 那如果要用HDFS存储大量的小文件时, 每个小文件都会占用1个Block块, 就会导致元数据过多, 针对于这种情况,
+        就可以用 归档 技术来解决.
+    本质:
+        归档相当于把大量的小文件放到一起, 形成1个整体, 类似于压缩包的动作, 但是只有压, 没有缩.
+    好处:
+        n个小文件 = n个Block块 = N份元数据    => 归档后,  n个小文件 = 1个归档包(文件) = 1个Block块 = 1份元数据信息
+    相关操作:
+        1. 在HDFS下创建data文件夹, 里边有1.txt, 2.txt, 3.txt三个文件.
+            hadoop fs -put *.txt /data
+        2. 把 /data目录下的 3个txt文件 合并成 1个归档包, 放到 /output目录下.
+            细节: 归档的底层其实是MR程序.
+            格式如下:
+                hadoop archive -archiveName 归档包名 -p 要归档的文件路径 存放归档包的路径
+            例如:
+                hadoop archive -archiveName myTest.har -p /data /output
+        3. 去 /output目录下查看内容, 发现(直接)看不到 1.txt, 2.txt, 3.txt的信息.
+            hadoop fs -ls /output/myTest.har            -- 看不到 1.txt, 2.txt, 3.txt的信息. 因为文件系统前缀是  hdfs://ndoe1:8020/
+            hadoop fs -cat /output/myTest.har/1.txt
+        4. 如何去归档包中查看归档前的内容内? 命令如下:
+            hadoop fs -ls har:///output/myTest.har     -- 可以看到, 因为用的是 har:///这个前缀, 全称是:  har://hdfs-node1:8020/
+            hadoop fs -cat har:///output/myTest.har/1.txt
+
+            hadoop fs -ls har://hdfs-node1:8020/output/myTest.har
+            即: 写不同的前缀, 意味着用不同的文件系统来识别该文件.
+        5. 删除/data目录下的 3个txt文件, 然后从 /output 的归档包中拷贝 3个txt文件 到 /data目录下.
+            hadoop fs -cp /output/myTest.har/ /data           -- 把归档包拷贝到 /data目录下, 拷贝的是 myTest.har包下的内容, 达不到我们要的效果.
+
+            hadoop fs -cp har:///output/myTest.har/ * /data     -- 把归档包拷贝到 /data目录下, 归档拷贝.
+    结论:
+        归档操作实际开发中, 一般是一周或者1个月做一次, 把该周或者该月所有的数据放到1个归档包中, 降低元数据, 且后期需要单独使用的时候, 也可以很方便的从归档包拷贝数据出来.
+
+
+-------------------------------HDFS的垃圾桶(Trash)机制:---------------------------------------------------------
+    概述:
+        如果没有开启HDFS的垃圾桶机制, 默认是直接删除文件或者文件夹的, 不走垃圾桶(不可恢复, 相当于永久删除).
+        如果开启了HDFS的垃圾桶机制, 则删除数据(文件或者目录)的时候, 本质是将该 文件/目录 移动到垃圾桶中(可恢复的).
+    开启垃圾桶的方式:
+        1. 修改 /export/server/hadoop/etc/hadoop/core-site.xml 文件, 加入如下内容:
+    <property>
+        <name>fs.trash.interval</name>
+        <value>1440</value>     # 垃圾桶保留多长时间, 单位是: 分钟, 即: 1天.
+    </property>
+        2. 记得将 core-site.xml文件分发给node2, node3, 即: 三台机器都要修改.
+            scp core-site.xml node2:$PWD
+            scp core-site.xml node3:$PWD
+           如果你不想拷贝, 就手动逐个机器修改, 修改node1的core-site.xml, 修改node2的, 修改node3的...
+        3. 重启Hadoop集群.
+            stop-all.sh
+            start-all.sh        # 这两个命令均是在 node1中执行的.
+        4. 之后就可以测试删除的功能了, 涉及到的HDFS Shell命令如下.
+            hadoop fs -rm /data/2.txt                                      -- 此时的删除就是 剪切到 垃圾桶中.
+            hadoop fs -mv /user/root/.Trash/Current/data/2.txt /data       -- 从垃圾桶中恢复源文件.
+            hadoop fs -rm -skipTrash /data/2.txt                           -- 跳过垃圾桶, 相当于永久删除.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#-----------------------------------hive函数--------------------------------------------
+describe function extended 函数名;    -- 查看函数的说明信息(详细信息), 包括 测试案例(有的没有)
+
+
+hive几种复杂类型：
+        array 数组[1,2,3]                     建表时： 字段名 array<string(类型）>,         调用字段名[下标]
+        struct 结构体name:li,age:18}          建表时： 字段名  struct<name:string,age:int>  调用 字段名.键名
+        map    字典（映射）{name:li,age:18}   建表时：字段名 map<string,int>                调用 字段名['键名']
+
+
+/*
+Hive函数介绍:
+    最初Hive函数分为 内置函数 和 用户自定义函数两大类, 其中用户自定义函数又被分为3类, 分别是:
+        内置函数:   属于Hive自带的.
+        用户自定义函数:
+            UDF:  全称叫 User Defined Functions, 普通函数, 即: 一进一出.
+                例如: select * from stu;
+            UDAF: 全称叫 User Defined Aggregation Functions, 聚合函数, 即: 多进一出.
+                例如: select count(id) from stu;
+            UDTF: 全称叫  User Defined Table-Generating Functions, 表生成函数, 即: 一进多出.
+                例如: select explode(array(11, 22, 33));
+    后来发现用 UDF, UDAF, UDTF来划分Hive函数实在是太方便了, 于是提出了1个词, 叫: 函数标准扩大化, 即:
+    UDF, UDAF, UDTF本来是形容用户自定义函数的, 现在, hive中的函数没有内置函数 和 自定义函数之分了, 取而代之的是: UDF, UDAF, UDTF
+
+      完整建表语法:
+                create [external] table [if not exists] 表名(
+                    列名 数据类型  [ comment '描述信息'],
+                    列名 数据类型  [ comment '描述信息'],
+                    列名 数据类型  [ comment '描述信息'],
+                    ......
+                ) comment '表的描述信息'
+                分区 partitioned by (id string)
+                分桶(桶内排序 + 分桶个数)  clustered by (name) sorted by (name) into 3 buckets
+                行格式切割符 row format delimited fields terminated by '\t'
+                存储格式(行存储, 列存储) stored as orc tblproperties ('orc.compress'='snappy');
+                存储位置 location inpath
+                表的属性信息;
+
+
+
+
+
+
+    Hive官网, 函数解释:
+        https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF#LanguageManualUDF-MathematicalFunctions
+
+    Hive函数, 必须要掌握的.
+        show functions;                     -- 查看hive所有内置函数, 289个, 其中, 符号也是Hive函数一种, 只不过函数名是符号而已.
+        describe function extended 函数名;   -- 查看函数详细信息.
+        split()切割字符串
+        substr() 字符串拼接 不能指定符号
+        concat_ws() 字符串拼接 可以指定符号
+        date_add() 日期增大
+        date_sub() 日期减小
+        datediff() 两个日期差值
+        year()
+        round() 四舍五入
+        rand()随机数
+        cast()类型转换
+        coalesce() 非空查找
+        case...when...
+        get_json_object() 处理JSON数据
+        json_tuple()处理JSON数据
+        json数据也可以在建表时直接用serde类直接处理：如下
+        -- 1. 建表(直接对json进行处理, 采用指定的SerDe类, 即: JsonSerDe), 上传表数据.
+                                                create table test2_json(
+                                                    device string,
+                                                    deviceType string,
+                                                    signal string,
+                                                    `time` string
+                                                ) row format serde 'org.apache.hive.hcatalog.data.JsonSerDe';     -- 如果不用默认的LazySimpleSerDe类, 采用指定SerDe类处理.
+        
+        
+        explode() 爆炸函数       结合lateral view 侧视图做列转行
+        collect_list()采集函数   结合字符串拼接函数做行转列
+        row_number()   结合窗口函数over()做排顺序  123456  正常排    注意！！！！！！！！他还可以拿来去重
+        rank()         结合窗口函数over()做排顺序  122456  跳过排
+        dense_rank()   结合窗口函数over()做排顺序  122456  可重复但不跳过排
+        ntile()表示几分之几, 里边的数字表示把数据分成几份, 如果不够分, 优先参考最小分区
+        lag()  格式:  lag(字段, n, 默认值)  向上获取字段的第n个值, 如果没有写写默认值, 找不到就是null, 如果写了默认值, 找不到就用默认值.
+        nvl() 空值转换
+        LEAD() 用于统计窗口内往下第n行值
+*/
+
+ 0  0  0   0 0 0 0 0  二进制  
+ 1  1  1   1 1 1 1 1  二进制  
+128 64 32 16 8 4 2 1  十进制  即2^(n-1)
+
+
+-- --------------------------------- 案例1: 演示Hive的 聚合函数增强  ---------------------------------
+-- 1. grouping sets() 在Hive 和 Presto中的作用一模一样, 但是写法稍有不同, 在Presto中写的时候, group by 后边不要写字段名(写了就报错)
+use test;
+select month, day, count(cookieid) cnt_nums from t_cookie
+group by        -- 这里不要写字段, 写了就错, 因为Presto会根据如下的维度, 自动填充.
+grouping sets
+    (month, day, (month, day));     -- 具体的3种维度: 月, 天, 月和天       运行了 3 秒
+    
+    
+
+hive中要写：
+select month, day, count(cookieid) cnt_nums from t_cookie
+group by  month, day      -- 这里要写字段, 不写了就错,
+grouping sets
+    (month, day, (month, day));     -- 具体的3种维度: 月, 天, 月和天       运行了 3 秒
+
+
+
+-- 2. cube()函数: 实现任意维度的组合, 即: 你传入3个维度, 则等价于 2 ^ 3 = 8种组合, cube()也叫任意维度组合.
+select month, day, count(cookieid) cnt_nums from t_cookie
+group by
+cube(month, day);
+
+-- 上述的SQL等价于, 如下的SQL
+select month, day, count(cookieid) cnt_nums from t_cookie
+group by
+grouping sets
+    ((), month, day, (month, day));     -- 空, 月, 天, 月和天, 共计 4 种维度.
+
+-- 3. rollup()函数, 从右往左 依次递减, 例如: rollup(a, b, c) 等价于 grouping sets((a,b,c), (a,b), (a), ())
+select month, day, count(cookieid) cnt_nums from t_cookie
+group by
+rollup(month, day);
+
+-- 上述的SQL等价于, 如下的SQL
+select month, day, count(cookieid) cnt_nums from t_cookie
+group by
+grouping sets
+    ((month, day), month, ());     -- 月和天, 月, 空 共计 3 种维度.
+
+
+-- 4. grouping()函数: 用来判断当前的结果属于哪种维度组合的, 规则: 0代表有, 1代表没有, 且这里的0和1是二进制的, 如果是多维度, 最终结果会显示成对应的 十进制结果.
+/*
+    例如: 二进制 10, 对应的十进制是 2 + 0 = 2,   二进制 11 对应的 十进制 2 + 1 = 3, 二进制 01对应的十进制 0 + 1 = 1.
+    二进制:    0   0   0   0   0   0   0   0
+    十进制:    128 64  32  16  8   4   2   1
+*/
+-- 入门版
+select month,
+       day,
+       count(cookieid),
+       grouping(month)      as m,
+       grouping(day)        as d,
+       grouping(month, day) as m_d
+from test.t_cookie
+group by
+   grouping sets (month, day, (month, day));
+
+-- 进阶版, 实际开发写法, 多维度组合判断.
+select
+       month, day,
+       count(cookieid) cnt_nums,
+       case grouping(month, day)
+        when 0 then '月和天'       -- 00(二进制) => 0 + 0 = 0(十进制)
+        when 1 then '月'          -- 01(二进制) => 0 + 1 = 1(十进制)
+        when 2 then '天'          -- 10(二进制) => 2 + 0 = 2(十进制)
+        when 3 then '空'          -- 11(二进制) => 2 + 1 = 3(十进制)
+       end as dimension
+from t_cookie
+group by
+grouping sets
+    ((), month, day, (month, day));     -- 4种维度, 空, 月, 天, 月和天
+
+
+
+
+
+
+
+
+
+
+-- 侧视图格式: lateral view 炸裂函数 侧视图名 as 炸裂后的列名.
+select * from the_nba_championship a lateral view explode(a.champion_year) b as champion_year;
+
+临时表也可以用视图来存：create view 临时视图名 as select * from .....
+
+-- ---------------------------- 案例4: 其它的建表方式(理解) ----------------------------
+-- 1. 查询所有数据表.
+show tables;
+-- 2. 原表
+select * from t_archer;     -- 10条数据.
+-- 3. 备份 t_archer表, 要求: 字段名, 数据类型, 数据都都保持一致.
+create table t1 as select * from t_archer;  -- 底层会转成MR程序, 备份表和原表, 字段名, 数据类型, 数据都会保持一致. 用的是默认分隔符: '\001'
+
+create table t2 row format delimited  fields terminated by ','
+as select * from t_archer;  -- 底层会转成MR程序, 备份表和原表, 字段名, 数据类型, 数据都会保持一致. 用的是指定分隔符: ','
+
+-- 4. 备份 t_archer表, 要求: 字段名, 数据类型, 保持一致, 没有数据, 即: 空表.
+create table t3 like t_archer;      -- 底层不会转MR.
+
+-- 5. 备份完之后, 查询表数据.
+select * from t1;
+select * from t2;
+select * from t3;
+
+------------------------------ 方式3: CTE表达式, 把结果临时用CTE存储, 然后再次查询.---------------------------
+with t1 as (
+     select
+       userId,
+       round(avg(realTotalMoney), 2) realTotalMoney_avg
+    from
+         orders
+    group by
+        userId
+)
+select * from t1 where realTotalMoney_avg > 10000;
+
+
+
+
+-- ----------------------------------------- 11. 行列转换回顾 -----------------------------------------
+use day07;
+-- 1. array()解释, 它是数组类型, 里边可以定义多个元素, 类似于Python中的列表.
+select 'aa,bb,cc';              -- 字符串, 即: 1个元素
+select array('aa', 'bb', 'cc'); -- 数组类型, 即: 里边有3个元素
+-- select ["aa","bb","cc"];     -- 报错
+
+-- 2. 炸裂函数 explode()里边必须是 数组 或者 字典map...
+describe function extended explode;     -- 查看函数详细信息, 结论: explode()里边必须放 array(), map()
+select explode(array(1, 2, 3));
+select explode(map(1, 2, 3));           -- 报错, 如果传入的是map形式, 必须是 键值对形式, 即: 偶数个参数.
+select explode(map(1, 2, 3, 4));        -- 1,3是键, 2,4是值
+
+-- 3. 行转列, 涉及到的函数: collect_list()采集,  concat_ws()拼接
+select
+       col1, col2,
+       concat_ws('-', collect_list(cast(col3 as string))) col3
+from row2col2 group by col1, col2;
+
+-- 4. 列转行, 涉及到的函数: explode()炸裂函数, lateral view侧视图
+select t1.col1, t1.col2, t2.col3 from col2row2 t1
+lateral view explode(split(col3, ',')) t2 as col3;
+
+
+
+
+---------------------------------------------------拉链表---------------------------------------------------------------------
+/*拉链表格式
+  旧的拉链表left join 更新数据  (这一步是为将旧的拉链表中的有更新行的endtim更改为更新的开始时间-1天）
+-- union all 更新数据  （这一步是修改完的旧表和新增表拼接在一起形成新表）
+*/
+
+select
+       dw.userid,
+       dw.phone,
+       dw.nick,
+       dw.gender,
+       dw.addr,
+       dw.starttime,
+       if(up.userid is null or dw.endtime <' 9999-12-31',dw.endtime,date_add(up.starttime,-1) ) as endtime  ----如果这条数据没有更新或者这条数据不是要更改的数据，就保留原来的值，否则就改为新数据的开始时间-1
+from dw_zipper dw
+         left join ods_zipper_update up on dw.userid = up.userid
+union all
+select * from ods_zipper_update;
+
+
+推荐使用CET表达式
+with t1 as ( select
+       dw.userid,
+       dw.phone,
+       dw.nick,
+       dw.gender,
+       dw.addr,
+       dw.starttime,
+       if(up.userid is null or dw.endtime <' 9999-12-31',dw.endtime,date_add(up.starttime,-1) ) as endtime   --如果这条数据没有更新或者这条数据不是要更改的数据，就保留原来的值，否则就改为新数据的开始时间-1
+from dw_zipper dw
+         left join ods_zipper_update up on dw.userid = up.userid )
+select * from t1 union all select * from ods_zipper_update;
+
+
+
+
+-------------------------------------省市区自关联查查询------------------------------------------------------------------------
+方式1：内连接
+select * from t1 , t2 ,t3 where t1.pid = t2.id and t2.pid = t3.id;  --t1 区 ，t2 市， t3 省；
+
+方式2：左外连接
+select * from t1 left join t2 on t1.pid = t2.id left join t3 on t2.pid = t3.id ;  -- t1区 t2市 t3省 
+
+
+
+
+
+
+
+---------------------------row_number结合over使用，还可以去重---------------------------------------
+实现思路：
+1、==ROW_NUMBER() OVER(PARTITION BY 需要去重字段 )== ，这样相同的就会分到一组；
+
+2、为分组中指定的去重字段标上行号,如果有重复的,选中行号为1的就可以。
+
+比如只以订单oid去重
+select
+    oid,
+    row_number() over(partition by oid) as rn1
+from test.t_order_detail_dup;
+
+--去重过程
+with tmp as (select
+    oid,
+    row_number() over(partition by oid) as rn1
+from test.t_order_detail_dup)
+select * from tmp where rn1 = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ------------------------------------------------------ MapReduce原理 ------------------------------------------------------
+/*
+问题1. 什么是计算, 什么是分布式计算?
+答案:
+    计算指的是从海量数据中提取出有效的价值信息的过程(广义上解释), 狭义上指的是 1 + 1 = 2 即: 数学运算.
+    分布式计算指的是 多台机器协调, 共同完成同1个计算任务.
+
+问题2: 分布式计算的两种模式?
+答案:
+    分散汇总模式:
+        大家各自做各自的, 最后交由主节点汇总.  例如: MR程序就属于这种.
+    中心化模式, 步骤执行:
+        由老大(主节点)统筹安排各机器的计算任务, 第一步, 第二步等..., 最后将结果交由主节点汇总.
+
+问题3: 我们知道MR是一种分布式计算架构, 采用的是 分而治之 的思想, 那么是不是所有的场景都适合用分而治之呢?
+答案:
+    不一定, 看需求, 如果把大任务拆分成n个小任务之后, 小任务之间的依赖度比较高的情况下, 就不适合用分而治之思想.
+    例如: 求平均数.
+
+问题4: 请简述MR的核心八步?
+答案:
+    1. 定义输入组件, 负责读取数据源. 逐行读取.
+    2. 自定义MapTask任务, 负责 分.
+    3. 分区.
+    4. 排序.
+    5. 规约.
+    6. 分组.
+    7. 自定义ReduceTask任务, 负责 合.
+    8. 定义输出组件, 将结果写到目的地文件中.
+
+问题5: 请简述MR程序的执行流程?
+答案:
+    1. MR程序分为MapTask阶段 和 ReduceTask阶段, 且:
+        1个切片 = 1个Block块 = 1个MapTask任务 = 1个分好区, 排好序, 规好约的文件.
+        1个分区 = 1个ReduceTask任务 = 1个结果文件.
+    2. 先对文件切片, 每个片的大小默认和Block块大小一致(即: 128MB), 且每个切片的数据会交由1个MapTask任务来处理.
+    3. MapTask任务采用逐行的方式从切片中读取数据, 逐行处理, 且会将处理后的数据放到 环形缓冲区(默认大小:100MB, 溢写比:0.8)
+    4. 当环形缓冲满(80MB)的时候, 会触发溢写线程(spill), 对该部分数据做分区, 排序, 规约的操作, 然后存储到磁盘上(小文件)
+    5. 对上述的小文件进行合并(默认: 10个一合并), 获取最终的文件, 即: 1个MapTask = 1个分好区, 排好序, 规好约的文件.
+    6. 当MapTask任务执行结束后, ReduceTask会开启1个拷贝线程, 从各个MapTask的结果文件中, 拷贝属于自己的数据(根据分区编号识别).
+    7. ReduceTask对数据进行 合并, 排序的操作, 获取最终结果数据.
+    8. ReduceTask将处理好的结果数据写到磁盘文件中, 1个ReduceTask = 1个结果文件, 至此, MR程序执行结束.
+*/
+
+-- ------------------------------------------------------ Yarn原理 ------------------------------------------------------
+/*
+问题1: 什么是资源?
+答案:
+    资源指的是硬件资源, 例如: CPU, 内存, 磁盘, 声卡, 网卡, 显卡...
+
+问题2: 什么是调度, 目的是什么?
+答案:
+    调度指的是当程序执行的时候, 所需资源有我们来集中管理分配, 目的是: 提高资源利用率.
+
+问题3: 我们知道Yarn是大数据分布式集群 统一任务接收 和 资源调度器, 怎么理解统一呢?
+答案:
+    Yarn是负责调度计算任务的, 至于计算任务是什么, Yarn根本就不关心, 只要符合Yarn规范即可.
+    即: 无论是MapReduce计算任务, Spark计算任务, Flink计算任务, Yarn都能调度.
+
+问题4: Yarn架构角色介绍 及 功能?
+答案:
+    Yarn属于大数据分布式集群 统一任务接收 和 资源调度器, 由 ResourceManager 和 NodeManager两种角色组成.
+    ResourceManager作用:
+        1. 负责管理整个集群的资源.
+        2. 负责任务的接收.
+        3. 负责资源的调度 和 分配.
+    NodeManager作用:
+        1. 管理本机的资源.
+        2. 负责具体任务的执行.
+    所谓的管理资源, 其实就是开辟容器空间, 也叫: 资源空间, 资源容器(Container).
+
+问题5: 请简述Yarn调度MR程序的流程? 也可能问: Yarn调度job(计算任务)流程.
+答案:
+    8步, 详见随堂图片.
+
+问题6: 请简述你对Yarn的三种调度策略的理解?
+答案:
+    FIFO Scheduler: 先进先出调度器, 类似于: 单车道,  目前几乎不用.
+        优点: 每个计算任务都独享集群 100%的资源.
+        缺点: 当小任务前有大任务在执行时, 小任务可能迟迟无法执行结束, 必须等待大任务执行完毕.
+
+    Capacity Scheduler: 容量调度器, 类似于: 多车道.    Apache Hadoop(社区版)默认用的调度策略.
+        优点:
+            1. 支持多任务并行执行.
+            2. 且支持资源借调.
+        缺点:
+            1. 可能存在资源无法归还的情况.
+            2. 存在资源浪费的情况, 即: 任务无法独享集群100%的资源.
+
+    Fair Scheduler: 公平调度器, 类似于: 潮汐车道.     最早是由FaceBook研发的, 后续我们要用的 商业版Hadoop, Yarn的调度策略就是这一种.
+        优点:
+            1. 支持多任务并行执行.
+            2. 且支持资源借调.
+                当有第1个任务执行的时候, 它独占集群100%的资源,
+                当有第2个任务执行的时候, 它(第1个任务)会分一半的资源给到第2个任务.
+                第有第3个任务执行的时候, 会再分一半的资源出去, 即: 三个任务的资源使用率都是 33.333%...
+        缺点:
+            当有大量小任务执行的时候, 存在大任务迟迟无法执行结束的情况.
+*/
+
+
+-- ------------------------------------------------------ Hive原理 ------------------------------------------------------
+/*
+1. 关于Hive的参数配置:
+    Hive的参数配置有 3 种配置方式:
+        方式1: 在hive的配置文件中直接进行修改.
+        方式2: 在开启Hive服务的时候, 设置参数
+            nohup hive --service hiveserver2 --hiveconf 参数名=参数值 &
+        方式3: 通过 set方式进行修改.
+            set mapreduce.job.reduces = 3;      -- 分桶查询的时候用的.
+    上述三种参数设置的优先级 及  范围问题:
+        作用范围从高到低分别是:
+            配置文件(所有客户端有效) > hiveconf, hive服务(本服务运行期间, 所有客户端有效) > set方式(本次会话有效)
+        优先级从高到低分别是:
+            set方式 > hive服务方式 > 配置文件
+            
+
+
+
+
+
+
+--------------------hive有动态分区时需要开启以下设置--------------------------------------------------------
+--分区
+SET hive.exec.dynamic.partition=true;
+SET hive.exec.dynamic.partition.mode=nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=10000;
+set hive.exec.max.dynamic.partitions=100000;
+set hive.exec.max.created.files=150000;
+--hive压缩
+set hive.exec.compress.intermediate=true;
+set hive.exec.compress.output=true;
+--写入时压缩生效
+set hive.exec.orc.compression.strategy=COMPRESSION;
+
+
+
+
+
+----------------------分析表关系方法---------------------------------------------------------------------------
+采用求交集法：a表         b表
+                1         n
+                n         n                 即有n留n，没n留1         
+                
+           表关系 n对N 要建第三个表来联系对应的2个表
+           表关系 1对N 要在n的那个边加一列外键列来对应1的那个表
+
+
+
+2. Hive调优方案介绍
+    1. 数据压缩.
+        判断一种压缩协议好与坏的标准: 压缩后文件占比, 解压速度, 压缩速度.
+        Hive的底层是MR程序, 所以Hive的压缩本质上还是MR的压缩, 它(MR程序)支持GZip, Bzip2, Lzo, Snappy(推荐使用: 因为更均衡)等协议.
+        数据压缩分为两项, 即: Map端压缩 和 Reduce端压缩.
+            Map端压缩的目的:
+                降低Reduce端拉取的数据量, 减少传输, 提高效率.
+            Reduce端压缩的目的:
+                降低写入磁盘的数据量, 减小结果文件的大小, 提高磁盘利用率.
+    2. 存储方式.
+        Hive表的存储格式分为 行存储 和 列存储两种, 其中:
+            行存储主要有两种方式: TextFile(默认的), SequenceFile
+            列存储主要有两种方式: Orc(推荐, 更均衡), Parquet(Spark中用的较多)
+        面试题: 行存储 和 列存储的区别是什么?
+        答案:
+            行存储:
+                优点:  select * from ... 方式, 查询数据, 效率较高.
+                缺点:
+                    1. 数据密集度低, 磁盘利用率低.
+                    2. select 列1, 列2..方式, 效率低.
+            列存储:
+                优点:
+                    1. 数据密集度较高, 磁盘利用率高.
+                    2. select 列1, 列2 方式效率高.
+                缺点:
+                    select * 方式效率相对较低, 但是实际开发中, 这种写法几乎不用.
+        细节:
+            1. 实际开发中, 如果 存储格式 和 压缩协议 你也不知道用谁了, 推荐使用: Orc + Snappy.
+            2. 列存储的底层是用 二进制 的形式来存储数据的.
+    3. Fetch抓取
+        我们知道Hive的底层要转MR任务来执行, 而MR程序的计算速度是非常慢的, 如果执行的是简单的HiveSQL, 没必要转MR程序, 直接执行即可.
+        大白话, Fetch抓取的意思是: HiveSQL 底层能不转MR, 就不转MR, 而是直接执行.
+        那, 哪些SQL不会转MR程序的呢?
+            1. select * 全表扫描.
+            2. select 列1, 列2 字段扫描.
+            3. limit 分页查询.
+            4. 一些简单的SQL语句.
+        通过 set hive.fetch.task.conversion=值;        的方式, 可以设置本地抓取模式.
+            more(默认值):  上述四项都不走MR.
+            minimal: 全表扫描, 列扫描, 分页查询不走MR.
+            none: 所有HiveSQL都走MR.
+    4. 本地模式
+        大白话: 如果HiveSQL非要转MR程序, 能在本地执行, 就尽量不要交给Yarn来调度, 因为可能会涉及到跨域(跨机器)传输, 降低效率.
+    5. join优化
+        join优化有3种情况, 即:
+            小表join大表:
+                1. 开启Map端join, 在Map端(内存中)对数据做合并, 降低Reduce端拉取的数据量, 一方面提高传输效率, 另一方面可以防止出现数据倾斜.
+                2. 其实join优化你开与不开, 本质没有太大的区别, 因为Hive为了提高查询效率, 已经设置了, 自动join优化.
+            大表join大表:
+                假设有A表(100W条数据, id列50W是空),   B表(60W条数据, id列40W空), 如果此时两张表根据 id列做关联查询, 会有大量的空值.
+                原始写法:
+                    select * from A inner join B on A.id = B.id;        -- 弊端是: id列有大量的空值, 无意义的操作较多.
+                1. 空值过滤.
+                    select * from A inner join (select * from B where id is not null) B on A.id = B.id;   -- 弊端: 会过滤掉大量的数据, 可能也会把有效的数据过滤掉
+                2. 空值转换.
+                    # 2.1 不随机分布, 固定值.
+                    select * from A inner join (
+                        select 列1, 列2.., case when id is null then 10 end as id from B
+                    ) B on A.id = B.id;   -- 虽然能解决, 但是null值过多, 会导致10过多, 将来出现数据倾斜的概率较大.
+
+                    # 2.2 随机分布, 可变值..
+                    select * from A inner join (
+                        select 列1, 列2.., case when id is null then concat(值, rand()) end as id from B
+                    ) B on A.id = B.id;
+            分桶表 join 分桶表:
+                前提:
+                    1. 两张表都是分桶表.
+                    2. 某表的分桶数量 是另外表 分桶数量的 偶数倍.
+                结论:
+                    表join连接查询的时候, 可以用 分桶字段替代 关联字段, 即:
+                    原始SQL:
+                        select * from A join B on A.id = B.id;
+                    优化后SQL:
+                        select * from A join B on A.分桶字段 = B.分桶字段;
+    6. SQL常规优化
+        1. 列裁剪.     能写 select 列1, 列2 就不要写 select *
+        2. 分区裁剪.   查询时, 如果是分区表, 记得写 where 分组字段
+        3. count(id). 如果数据量大, 容易出错, 可以改成 先分组, 后统计, 虽然会转2个MR, 执行速度慢了, 但是数据量大的情况下, 也可以成功执行.
+        4. 避免笛卡尔积的情况.
+        5. group by数据倾斜
+            描述: 分配给ReduceTask端的数据不均衡导致的问题.  例如: 1个ReduceTask处理100W条数据, 另1个ReduceTask处理100条数据.
+            解决方案:
+                手动开启负载均衡, 程序的底层会转两个MR程序来执行该任务, 第1个MR程序负责把倾斜的数据随机打散, 交给不同的ReduceTask来处理.
+                第1个MR程序的(Reduce端结果) 作为 第2个MR程序的Map段数据源, 然后由第2个MR的Reduce负责合并数据.
+            大白话:
+                手动开启负载均衡, 由第1个MR随机打散(倾斜的)数据, 由第2个MR来合并.
+        6. 动态分区
+            手动调大动态分区数, 默认动态分区上限是1000, 如果HQL分区数量超过它, 会报错, 我们调大分区数即可.
+            小细节: 动态分区的时候, 可以关闭严格模式, 因为严格模式要求: 动态分区时至少有1个静态分区.
+    7. 调整MR的任务数.
+        调整MapTask任务数:
+            1. 1个切片 = 1个MapTask任务 = 1个分好区, 排好序, 规好约的文件.
+            2. 减小切片大小(默认: 128MB) = 增多MapTask任务数,   增大切片大小 = 减少MapTask任务数.
+        调整ReduceTask任务数:
+            1. 1个分区 = 1个ReduceTask任务 = 1个结果文件
+            2. 手动设置分区数, 即可修改ReduceTask的任务数量.
+    8. 并行执行.
+        默认情况下, HiveSQL只会执行1个阶段, 如果多阶段之间依赖度不高, 我们可以开启并行执行机制.
+        并行执行机制, 默认并行度是 8, 我们可以调大一些.
+    9. 严格模式.
+        这个严格模式指的是 禁用低效的SQL, 即: 如果SQL比较低效, 压根儿不让你执行.  这个严格模式 和 动态分区的严格模式可以不是同1个.
+        问: 哪些SQL属于低效的SQL呢?
+        答:
+            1. select *.. 全表扫描
+            2. order by的时候没有加 limit
+            3. 笛卡尔积.
+    10. jvm重用.
+        Hive2.X已开启, 无需设置, Hive2.X以前Container容器用一次就释放了, 开启JVM重用, 可以重复利用这些Container资源容器.
+    11. explain执行计划
+        在HQL前加 explain执行计划, 查看SQL的执行分几个阶段, 阶段越少, 执行速度越快.
+    12. 推测执行
+        实际开发, 禁用它, 类似于木桶效应.
+        假设HQL转了3个MapReduce任务, 其中前两个任务执行速度都较快, 但是第三个任务执行速度太慢了, 会拖慢整个MR程序的执行进度.
+        此时程序会开启1个新的任务, 负责和那个慢的任务做同样的事儿, 采用谁先执行完, 用谁的结果. 无意义, 因为已经很慢了, 开启新任务后会更慢.
+
+关于Hive的调优, 大家了解即可, 为了简化大家的记忆, 我给大家总结四句话(仅代表个人观点):
+    1. 更改硬件.
+    2. 增大或者开启某些设置.      -- Fetch抓取, 开启负载均衡(解决group by数据倾斜), 动态分区数, join优化, 开启严格模式(禁用低效SQL)
+    3. 减小或者关闭某些设置.      -- 推测执行, 严格模式(动态分区的), MapReduce的任务数.
+    4. 减少IO.                 -- 数据压缩, 存储格式.
+*/
+--  --------------------------------------- 案例1: 测试存储方式 和 压缩协议 ---------------------------------------
+create database day10;
+use day10;
+show tables;
+
+select url, session_id from log_text ;
+
+-- 思考, 观察下列存储的表, 直接在HDFS上查看源文件, 能看到文件内容吗?
+-- 答案: 看不到, 因为列存储底层用的是 二进制方式存储的.
+
+-- 1. 建表, 默认方式: TextFile(行存储), 不压缩.
+create table log_text (
+    track_time string,
+    url string,
+    session_id string,
+    referer string,
+    ip string,
+    end_user_id string,
+    city_id string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+-- STORED AS TEXTFILE ;     -- 默认就是 TextFile(行存储)
+
+-- 2. 上传数据, 然后查看源数据.
+select * from log_text;     -- 文件大小: 18.13 MB,  数据条数: 10W条
+
+-- 3. 建表, orc(列存储), 如果不指定压缩, orc默认用的是 zlib方式压缩.
+drop table log_orc;
+create table log_orc (
+    track_time string,
+    url string,
+    session_id string,
+    referer string,
+    ip string,
+    end_user_id string,
+    city_id string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+stored as orc;      -- 列存储(orc格式进行存储)
+
+create table log_orc_zlib (
+    track_time string,
+    url string,
+    session_id string,
+    referer string,
+    ip string,
+    end_user_id string,
+    city_id string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+stored as orc                               -- 存储方式: 列存储(orc格式进行存储)
+tblproperties ('orc.compress'='zlib');      -- 表属性: zlib压缩协议.
+
+show create table log_orc;
+-- 查看orc格式的表, 默认的压缩协议.
+show create table log_orc;
+
+-- 细节: 通过 insert + select的方式, 往orc格式的表中添加数据.
+insert into log_orc select * from log_text;
+insert into log_orc_zlib select * from log_text;
+
+-- 4. 上传数据, 然后查看源数据.
+select * from log_orc;     -- 文件大小: 2.78 MB,  数据条数: 10W条
+explain select session_id, count(session_id) from log_orc_zlib group by session_id order by session_id;     -- 文件大小: 2.78 MB,  数据条数: 10W条
+
+-- 5. 建表, orc(列存储) + snappy(数据压缩)
+create table log_orc_snappy (
+    track_time string,
+    url string,
+    session_id string,
+    referer string,
+    ip string,
+    end_user_id string,
+    city_id string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+stored as orc                               -- 存储方式: 列存储(orc格式进行存储)
+tblproperties ('orc.compress'='snappy');      -- 表属性: snappy压缩协议.
+
+-- 6. 上传数据, 然后查看源数据.
+insert into log_orc_snappy select * from log_text;
+select * from log_orc_snappy;     -- 文件大小: 3.75 MB,  数据条数: 10W条
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------Zookeeper介绍(以下简称ZK):-------------------------------------------------------
+    概述:
+        它是大数据分布式协调服务框架, 用来帮助我们管理大数据集群的, 例如: 选举机制, 主备切换, 全局数据一致性等问题.
+        吉祥物是1个拿着铁锹的人, 它(ZK)本身也是1个小型的分布式文件系统, 可以用来存储数据, 每个节点叫ZNode节点,
+        且每个节点存储的数据量不能超过 1MB.
+    本质:
+        ZK本身是1个小型的文件系统, 可以存储数据, 但是我们用的不是它的存储功能, 而是用它(ZK)来帮我们管理大数据集群.
+    如何启动ZK集群:
+        1. ZK是帮助我们管理大数据集群的, 所以直接启动ZK即可, 无需先启动Hadoop, 在启动Hive, 再启动ZK.
+        2. 因为是首次使用ZK, 我们需要去配置下Path环境变量, 注意: 三台机器都要配置:
+            [root@node1 ~]# echo 'export ZOOKEEPER_HOME=/export/server/zookeeper' >> /etc/profile
+            [root@node1 ~]# echo 'export PATH=$PATH:$ZOOKEEPER_HOME/bin' >> /etc/profile
+            [root@node1 ~]# source /etc/profile
+        3. 启动ZK集群.
+            zkServer.sh  start      -- 三台机器都要做
+            zkServer.sh  status     -- 查看当前机器ZK的角色(Leader, Follower, ObServer)
+            zkServer.sh  stop       -- 关闭ZK集群.
+    ZK集群各角色介绍:
+        Leader: 主节点(选举出来的)
+            1. 管理整个ZK集群, 负责: 全局数据一致性.
+            2. 负责处理 数据事务请求(增删改)
+            3. 负责转发 数据非事务请求(读) 给 Follower.
+        Follower: 追随者
+            1. 实时从Leader中拉取数据, 保证: 全局数据一致性.
+            2. 负责处理 数据非事务请求(读)
+            3. 负责转发 数据事务请求(增删改)给Leader
+            4. 有选举权.
+        ObServer: 观察者
+            1. 除了没有选举权外, 其它和Follower一样.
+            2. 只有大厂, 大规模数据量才会配置, 一般不配.
+    ZK的客户端:
+        zkCli.sh                    -- 连接本机
+        zkCli.sh -server node2      -- 连接node2机器
+    常见的Shell命令:
+        help                                查看ZK支持的所有命令.
+        ls path [watch]                     查看ZK的节点信息(简单信息)
+        ls2 path [watch]                    查看ZK的节点信息(详细信息)
+        create [-s] [-e] path data          创建ZNode节点, 默认: 永久无序节点, 加-s是有序节点, 加-e是临时节点.
+        get path [watch]                    查看ZNode节点的内容
+        set path data [version]             修改ZNode节点的内容
+        delete path [version]               删除ZNode节点(只能删除叶子节点)
+        rmr path                            删除ZNode节点(删除节点, 包括子级)
+        history                             查看历史命令
+        redo cmdno                          根据命令编号, 重新执行对应的命令.
+    ZK的数据模型介绍:
+        1. ZK的ZNode节点兼具有 文件 和 目录的功能, 既能存储数据, 也可以有子节点(类似于 目录的功能)
+        2. ZNode节点 更新原子性, 要么全成功, 要么全失败.
+        3. ZNode节点 存储的数据不能超过 1MB.
+        4. ZNode节点 路径必须是绝对的, 没有相对路径的写法.
+    ZK集群ZNode节点类型划分(4种):
+        永久节点:  Persistent(永久)
+            特点:
+                1. 当会话结束后, 节点仍然在, 除非手动删除.
+                2. 可以有子节点.
+        临时节点:  Ephemeral(临时)
+            特点:
+                1. 当会话结束, 临时节点会消失, 无需手动删除.
+                2. 不能有子节点.
+        永久有序节点: Sequential(有序)
+            特点: 会在节点名后边加上10位的数字, 其它和永久节点一致.
+        临时有序节点:
+            特点: 会在节点名后边加上10位的数字, 其它和临时节点一致.
+    关于ZNode节点的属性介绍:
+        get 节点路径        -- 除了可以查看节点的内容以外, 还可以看到节点的属性信息.
+    Zookeeper的特征:
+        1. 全局数据一致性.   即: 客户端无论访问那一台机器, 获取到的结果都是一样的.
+        2. 可靠性.
+        3. 数据更新原子性.
+        4. 顺序性.
+        5. 实时性.
+    Zookeeper集群的主备切换:
+        1. ZNode节点的唯一性.
+        2. watch监听机制.
+        3. 临时节点的短暂性.
+    Zookeeper的选举机制:   指的是, 怎么选出来Leader的, 剩下的都是Follower
+        原则:  过半原则(Paxos算法), 只要那个节点获取的票数 达到或者超过 集群节点总数的一半或以上, 谁就是Leader, 剩下的是Follower.
+        如果是新集群:
+            只参考MyId值, 大家会把票优先投给MyId值大的机器.
+        如果是旧集群:  即已经运行了一段时间(例如: 半年, 1年, 2年...)的Zookeeper集群, 宕机了.
+            节点的事务id(投给大的), 一样则参考MyId值.
+    细节:
+        1. ZK中所有的路径都必须是绝对路径, 没有相对路径的写法.
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------sqoop操作----------------------------------------------------------------
+标准写法
+/usr/bin/sqoop import "-Dorg.apache.sqoop.splitter.allow_text_splitter=true" \
+--connect 'jdbc:mysql://192.168.88.80:3306/yipin?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true' \
+--username root \
+--password 123456 \
+--query "select * from t_district where 1=1 and  \$CONDITIONS" \
+--hcatalog-database yp_ods \
+--hcatalog-table t_district \
+-m 1
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+练习内容1: 	//Hue,  登陆界面:  hadoop02:8889
+	1. Hue操作HDFS
+	2. Hue操作Hive
+	
+	
+练习内容2:	//Sqoop
+	1. 测试Sqoop是否OK, 即: 通过Sqoop查看本机(hadoop01) MySQL数据库都有哪些数据表. 
+		方式1: 	//一行写完.
+			sqoop list-databases --connect jdbc:mysql://hadoop01:3306 --username root --password 123456
+			//上述内容也可以变形为
+			sqoop list-databases --connect jdbc:mysql://192.168.88.80:3306 --username root --password 123456
+
+		方式2: //多行实现, 如果后续还有内容, 则写 \ 即可, 表示后续内容和该行是一行. 
+			sqoop list-databases \
+			--connect jdbc:mysql://hadoop01:3306 \
+			--username root \
+			--password 123456
+		
+
+	2. Sqoop导入数据.		//即: 从 MySQL 导入=> HDFS, Hive
+		1. 准备动作, 即: 在MySQL中创建 数据库 userdb, 然后通过导入外部脚本的方式, 往该库中导入数据. 
+			1.1 连接MySQL
+				mysql -uroot -p123456
+				create database userdb;
+			
+			1.2 上传 day02资料/userdb.sql 文件到 hadoop01节点的 /root目录下		//其实哪个目录都OK, 无所谓.
+				因为目前的Hadoop01机器没有安装 rzsz, 所以需要先执行:   yum -y install lrzsz 
+				//如果你在执行这个命令的时候一致提示镜像找不到, 排除网络通常的情况下, 去 修改ip的那个文件中, 加一句话
+					vim /etc/sysconfig/network-scripts/ifcfg-ens33
+					DNS2=114.114.114.114			//这个是做域名解析的, 如果能直接下载, 不用做这个操作. 
+				
+			1.3 在MySQL中执行如下的命令, 导入数据
+				source /root/userdb.sql
+				
+			1.4 查看导入结果.
+				show tables;
+				
+		
+		场景1: Sqoop导入数据到 HDFS, 全量导入. 
+			//案例1: MySQL userdb数据库的emp数据表 全量导入到HDFS /sqoop/result1 路径下.
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--target-dir /sqoop/result1 \
+				--table emp --m 1
+				
+				解释:
+					--target-dir   表示目标目录的路径, 即: 导入到的HDFS的路径(子目录必须不存在, 会自动创建).
+					--table		   表示数据源表, 即: MySQL的表名
+					--m			   MapReduce的任务数, 1表示1个分区, 即: 最终结果在1个文件中. 
+				
+				细节:
+					因为上述的导入动作, 没有去指定分割符, 所以用的是默认分隔符, 即: ,逗号
+					
+			//案例2: 指定分隔符
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--target-dir /sqoop/result2 \
+				--fields-terminated-by '\t' \
+				--table emp --m 1
+			
+			//案例3: 指定任务并行度（maptask个数）. 即: 最终是2个文件.	
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--target-dir /sqoop/result3 \
+				--fields-terminated-by '\t' \
+				--table emp --m 2
+				
+				上述的命令最后是 --m 2, 即两个MapReduce, 最终结果会到2个文件中, 但是因为上述表 没有主键(特点: 唯一, 非空),
+				且我们没有自己手动指定 分割列, 所以上述的代码会报错. 加入 --split-by 切割字段即可, 具体如下:
+				//建议切割字段最好是id列, 或者是数字列.
+				
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--target-dir /sqoop/result3 \
+				--fields-terminated-by '\t' \
+				--split-by id \
+				--table emp --m 2
+				
+				
+		
+		场景2: Sqoop导入数据到 Hive, 全量导入. 
+			准备动作:
+				去Hive中, 创建test数据库即可, 用于测试. 
+				beeline
+				!connect jdbc:hive2://hadoop01:10000
+			
+			//案例1: 全量导入, Hive表是 TextFile(默认格式, 行存储)
+			方式1: 先创建hive表, 然后再导入数据.
+				1. 先创建hive表.
+					sqoop create-hive-table \
+					--connect jdbc:mysql://hadoop01:3306/userdb \
+					--table emp_add \
+					--username root \
+					--password 123456 \
+					--hive-table test.emp_add_hive
+
+				2. 往上述的hive表中导入数据. 
+					sqoop import \
+					--connect jdbc:mysql://hadoop01:3306/userdb \
+					--table emp_add \
+					--username root \
+					--password 123456 \
+					--hive-table test.emp_add_hive \
+					--hive-import \
+					--m 1
+					
+			
+			方式2: 直接创建hive表, 同时导入数据. 	//这种方式会在hive中创建一张和MySQL一模一样的表. 
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--table emp_add \
+				--username root \
+				--password 123456 \
+				--hive-database test \
+				--hive-import \       --这一项是导入hive必写，不然会报错；
+				--m 1
+				
+			//案例2: 全量导入, Hive表是 Orc(列存储)
+			1. 创建一张hive表, 采用orc格式存储数据.	  它对应的是MySQL的 userdb数据库的 emp表. 
+				create table test.emp_hive(
+					id int,
+					name string,
+					deg string,
+					salary int,
+					dept string
+				) row format delimited fields terminated by '\t' stored as orc;
+			
+			2. 往上数的数据表中导入数据.
+				//我们先用Sqoop自带的参数, 即: 原生API来导入, 发现报错, 因为原生API不支持Orc格式.
+				sqoop import \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table emp \
+				--fields-terminated-by '\t' \
+				--hive-database test \
+				--hive-table emp_hive \
+				--m 1
+				
+				//针对于上述的需求, 我们可以使用 HCatalog API实现, 它支持的格式更多一些, 但是相对没有Sqoop原生API灵活.
+				sqoop import \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table emp \
+				--fields-terminated-by '\t' \
+				--hcatalog-database test \
+				--hcatalog-table emp_hive \
+				--m 1
+								
+				Sqoop原生API 和  HCatalog之间的区别是什么?
+					1. 数据格式支持		//这是实际中使用HCatalog的主要原因，否则还是原生的灵活一些.
+						Sqoop方式支持的数据格式较少;
+						HCatalog支持的数据格式多，包括RCFile, ORCFile, CSV, JSON和SequenceFile等格式。
+
+					2. 数据覆盖
+						Sqoop方式允许数据覆盖，HCatalog不允许数据覆盖，每次都只是追加。
+
+					3.字段名匹配
+						Sqoop方式比较随意，不要求源表和目标表字段相同(字段名称和个数都可以不相同)，它抽取的方式是将字段按顺序插入，
+						比如: 目标表有3个字段，源表有一个字段，它会将数据插入到Hive表的第一个字段，其余字段为NULL。
+							
+						但是HCatalog不同，源表和目标表字段名需要相同，字段个数可以不相等，如果字段名不同，抽取数据的时候会报
+						NullPointerException错误。HCatalog抽取数据时，会将字段对应到相同字段名的字段上，哪怕字段个数不相等。
+					总结:
+						HCatalog方式较之于Hive原生API, 优点是: 支持的数据格式更多一些, 例如: CSV, Orc, Json, SequenceFile等.
+						缺点是: 没有Hive原生API灵活, 例如: 它支持追加, 不支持覆盖, 且导入时要求 目标表字段名 和 原表字段名要一致.
+	
+
+		场景3: Sqoop导入数据, 条件导入. 
+			//方式1: where方式,  主要过滤的是行.   例如: 有10行数据, id是1-10, 我们写了个where id <= 3, 我们就只能过滤出 3条数据. 
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--where "id >= 1203" \
+				--target-dir /sqoop/result4 \
+				--table emp --m 1
+		
+			//方式2: query方式,  主要过滤的是 行 和 列, 即: 最终结果取决于你的SQL写的啥. 
+				sqoop import \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--query 'select id,name,salary from emp where id >= 1203 and $CONDITIONS;' \
+				--target-dir /sqoop/result5 \
+				--m 1
+				
+				解释:
+					1. 因为有SQL语句了, 所以不能写 --table
+					2. query后边的SQL语句要用单引号包裹, 不能是双引号.
+					3. query后边的SQL语句必须跟 where 查询条件.
+					4. query后边的SQL语句的最后必须跟上  $CONDITIONS 表示SQL语句结束. 
+                    5.使用 --query 时，必须指定（导入hive可以不用） --target-dir 参数：即这种只能导入hdfs 
+                                                                导入hive时要先在hive中建表以后才可以用query
+			
+			
+		场景4: Sqoop导入数据, 增量导入. 
+			关于增量导入有3个核心参数:
+				--check-column：	//以哪一列的值作为增量的基准
+				--last-value：		//指定上一次这一列的值是什么
+				--incremental：		//指定增量的方式
+					append模式: 
+						要求：
+							必须有一列自增的值，按照 自增的int值 进行判断
+						特点：
+							只能导入增加的数据，无法导入更新的数据
+						
+					lastmodified模式: 
+						//不仅会导入新增数据, 还会导入修改数据, 该模式要求, 必须有一个 动态修改的 时间戳. 
+						
+			案例1: append模式.
+				1. 先全量导入表的数据.
+					sqoop import \
+					--connect jdbc:mysql://192.168.88.80:3306/userdb \
+					--username root \
+					--password 123456 \
+					--target-dir /sqoop/appendresult \
+					--table emp --m 1
+				
+				2. 在MySQL中, 往 userdb数据库的 emp 表中 新增两条数据.
+					insert into `userdb`.`emp` (`id`, `name`, `deg`, `salary`, `dept`) values ('1206', 'allen', 'admin', '30000', 'tp');
+					insert into `userdb`.`emp` (`id`, `name`, `deg`, `salary`, `dept`) values ('1207', 'woon', 'admin', '40000', 'tp');
+					
+				3. 在MySQL中, 往 userdb数据库的 emp 表中 修改1条数据.
+					 update emp set name='liuyifei', salary=80000 where id = 1201;
+					
+				4. 采用append模式, 增量导入, 看是否会导入 新增数据, 更新数据. 
+					sqoop import \
+					--connect jdbc:mysql://192.168.88.80:3306/userdb \
+					--username root \
+					--password 123456 \
+					--target-dir /sqoop/appendresult \
+					--table emp --m 1 \
+					--check-column id \
+					--last-value 1205 \
+					--incremental append
+					
+			
+			案例2: lastmodified模式.
+				要求：
+					必须包含动态时间变化这一列，按照数据变化的时间进行判断.
+				特点：
+					既导入新增的数据, 也导入更新的数据
+				具体步骤:
+					1. 在MySQL的userdb数据库中, 创建数据表, 该表有 动态时间戳这一列, 用于记录该列值 添加或者修改的时间. 
+						create table customertest(
+							id int,
+							name varchar(20),
+							last_mod timestamp default current_timestamp on update current_timestamp
+						);
+						
+					2. 具体的添加数据的动作, 建议:不要批量执行,而是逐条执行, 因为MySQL的效率很高, 你要是批量执行了, 可能他们修改时间都一样.
+						insert into customertest(id,name) values(1,'neil');
+						insert into customertest(id,name) values(2,'jack');
+						insert into customertest(id,name) values(3,'martin');
+						insert into customertest(id,name) values(4,'tony');
+						insert into customertest(id,name) values(5,'eric');
+					
+					3. 先全量导入表的数据.
+						sqoop import \
+						--connect jdbc:mysql://192.168.88.80:3306/userdb \
+						--username root \
+						--password 123456 \
+						--target-dir /sqoop/lastmodifiedsult \
+						--table customertest --m 1
+					
+					4.  在MySQL中, 往 userdb数据库的 customertest 表中 新增1条数据.
+						insert into customertest(id,name) values(6,'james');
+					
+					5. 在MySQL中, 往 userdb数据库的 customertest 表中 修改1条数据.
+						update customertest set name = 'LiuYiFei' where id = 1;
+					
+					6. 采用lastmodified模式, 增量导入, 看是否会导入 新增数据, 更新数据. 
+						sqoop import \
+						--connect jdbc:mysql://192.168.88.80:3306/userdb \
+						--username root \
+						--password 123456 \
+						--target-dir /sqoop/lastmodifiedsult \
+						--table customertest --m 1 \
+						--check-column last_mod \
+						--last-value ' 2022-09-26 16:13:29' \
+						--incremental lastmodified \
+						--merge-key id 
+						
+						解释: 
+							1. merge-key这种模式是进行了一次完整的mapreduce操作，即: id一样的数据, 是同一条数据. 重复会覆盖,不重复会新增.
+							2. 因此最终我们在lastmodifiedresult文件夹下可以发现id=1的name已经得到修改，同时新增了id=6的数据
+	
+	3. Sqoop 导出数据.		//即: 从HDFS, Hive 导出=> MySQL中
+		//Sqoop导出数据的最大的特点是, (MySQL的)表需要我们手动创建.    重点------------------------------------------------------
+		
+		场景1: 全量导出.
+			1. 在MySQL中创建数据表, 一会用于 导出 HDFS, Hive的数据到这里. 
+				create table employee ( 
+				   id int not null primary key, 
+				   name varchar(20), 
+				   deg varchar(20),
+				   salary int,
+				   dept varchar(10)
+				);
+				
+			2. 从 HDFS的 /sqoop/result1 中 导出数据到 MySQL的 employee表中. 
+				sqoop export \
+				--connect jdbc:mysql://hadoop01:3306/userdb \
+				--username root \
+				--password 123456 \
+				--export-dir /sqoop/result1 \
+				--table employee --m 1		
+				
+			3. 清空MySQL的 userdb数据库的 employee表的数据.
+				truncate table employee;
+			
+			4. 演示从 Hive中 导出数据到 MySQL中. 
+				sqoop export \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table employee \
+				--hcatalog-database test \               不能用hive-datebase!!!!!!!!!!!
+				--hcatalog-table emp_hive \
+				--input-fields-terminated-by '\t' \
+				--m 1 
+
+				//注意，如果Hive中的表底层是使用ORC格式存储的，那么必须使用hcatalog API进行操作。
+		
+		场景2: 增量导出.
+			增量导出两种模式解释:
+				updateonly：		//只增量导出更新(修改)的数据
+				allowinsert：		//既导出更新的数据，也导出新增的数据
+		
+			//案例1: 演示 updateonly
+			1. 准备数据源, 即: 在HDFS上 创建1个文件, 表示原始数据.
+				//#在HDFS文件系统中/sqoop/updateonly/目录的下创建一个文件updateonly_1.txt
+				hadoop fs -mkdir -p /sqoop/updateonly/
+				hadoop fs -put updateonly_1.txt /sqoop/updateonly/
+
+				1201,gopal,manager,50000
+				1202,manisha,preader,50000
+				1203,kalil,php dev,30000
+				
+			2. 在MySQL中创建数据表, 先全量导入上述的数据.
+				CREATE TABLE updateonly ( 
+				   id INT NOT NULL PRIMARY KEY, 
+				   name VARCHAR(20), 
+				   deg VARCHAR(20),
+				   salary INT
+				);
+			
+				sqoop export \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table updateonly \
+				--export-dir /sqoop/updateonly/updateonly_1.txt
+				
+			3. 在HDFS上 再创建1个文件, 表示 增量, 更新数据. 	//updateonly_2.txt
+				新增一个文件updateonly_2.txt：修改了前三条数据并且新增了一条记录
+				1201,gopal,manager,1212
+				1202,manisha,preader,1313
+				1203,kalil,php dev,1414
+				1204,allen,java,1515
+				
+			4. 增量导出 HDFS的 /sqoop/updateonly/updateonly_2.txt文件数据到 MySQL的 updateonly表中.
+				sqoop export \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table updateonly \
+				--export-dir /sqoop/updateonly/updateonly_2.txt \
+				--update-key id \
+				--update-mode updateonly
+				
+				
+			//案例2: 演示allowinsert
+			1. 在MySQL中创建表, 用于存储 导出的数据. 
+				CREATE TABLE allowinsert ( 
+				   id INT NOT NULL PRIMARY KEY, 
+				   name VARCHAR(20), 
+				   deg VARCHAR(20),
+				   salary INT
+				);
+				
+			2. 先全量导入上述的数据, 即: /sqoop/updateonly/updateonly_1.txt
+				sqoop export \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table allowinsert \
+				--export-dir /sqoop/updateonly/updateonly_1.txt				
+			
+			3. 增量导出 HDFS的 /sqoop/updateonly/updateonly_2.txt文件数据到 MySQL的 updateonly表中.
+				sqoop export \
+				--connect jdbc:mysql://192.168.88.80:3306/userdb \
+				--username root \
+				--password 123456 \
+				--table allowinsert \
+				--export-dir /sqoop/updateonly/updateonly_2.txt \
+				--update-key id \
+				--update-mode allowinsert
+
+					
+                    
+
+
+------------------------------------------15. Oozie使用案例------------------------------------------------------------------------------
+	1. 查看已有oozie程序
+	2. 新增oozie程序
+	3. 提交任务
+	4. 修复异常
+	
+	具体步骤:
+		1. Oozie的入门在Hue的WebUI界面的中.
+			1.1 进入Hue的WebUI界面.
+				http://hadoop02:8889/hue/editor/?type=hive
+			1.2 点击 查询后的下拉箭头 => 计划程序 => WorkFlow/计划(就是Coordinator)/Bundle
+			
+		2. 此处, 我们先建立一个 workflow(普通工作流)
+			 
+		3. 我们可以往上述的workflow中拖入1个Shell脚本, 命令名是: ls, 参数是: /	意思是: 查看根目录下的文件(夹)的名字
+			//拖入其它的,例如Hive也是可以的, 只不过这里简单演示即可. 
+			//此时我们就建立了一个DAG图(有向无环图)
+			//实际开发中, 我们很少直接编辑依赖关系, 一般是通过脚本的方式实现的, 倒数第二天的时候我们具体讲解. 
+			
+		4. 此时我们可以修改这个工作流(也叫调度)的名字和描述信息.
+			//当然, 也可以不做任何的修改, 只用默认的信息即可. 
+			
+		5. 点击右上角的 保存(Save)按钮, 保存该调度任务, 然后选择 执行按钮执行即可. 
+			//第一次执行肯定会报错, 原因是内存分配过小导致的错误，需要设置内存并重启Yarn, 具体描述信息如下:
+			Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.yarn.exceptions.InvalidResourceRequestException): Invalid resource request! Cannot allocate containers as requested resource is greater than maximum allowed allocation. Requested resource type=[memory-mb], Requested resource=<memory:2048, vCores:1>, maximum allowed allocation=<memory:1536, vCores:4>, please note that maximum allowed allocation is calculated by scheduler based on maximum resource of registered NodeManagers, which might be less than configured maximum allocation=<memory:1536, vCores:4>
+			//Oozie一次申请的资源是: 2G,1核, 但是目前能给到的最大资源是: 1.5G, 4核
+			
+		6. 修复上述的异常. 
+			6.1 如下是 yarn-site.xml文件中的信息, 各参数解释如下
+				//分配给AM(AppMaster)单个容器可申请的最小内存
+				<property>
+					<name>yarn.scheduler.minimum-allocation-mb</name>
+					<value>526</value>
+				</property>
+				//分配给AM(AppMaster)单个容器可申请的最大内存
+				<property>
+					<name>yarn.scheduler.maximum-allocation-mb</name>
+					<value>4086</value>
+				</property>
+				//分配给AM(AppMaster)单个容器可申请的最小(CPU)核心
+				<property>
+					<name>yarn.scheduler.minimum-allocation-vcores</name>
+					<value>1</value>
+				</property>
+				//分配给AM(AppMaster)单个容器可申请的最大(CPU)核心
+				<property>
+					<name>yarn.scheduler.maximum-allocation-vcores</name>
+					<value>2</value>
+				</property>
+				//该节点上YARN可使用的物理内存总量
+				<property>
+					<name>yarn.nodemanager.resource.memory-mb</name>
+					<value>2048</value>
+				</property>
+				//虚拟内存的大小是物理内存大小的4.1倍
+				<property>
+					<name>yarn.nodemanager.vmem-pmem-ratio</name>
+					<value>4.1</value>
+				</property>
+			
+			6.2 我们修改如下的参数信息.在yarn配置搜索框里搜索下面两个改
+			
+				yarn.nodemanager.resource.memory-mb		//这个值改为 4G
+				yarn.scheduler.maximum-allocation-mb	//这个值改为 3G
+				具体步骤如下:
+					6.2.1 在CM管理界面中, 点击Yarn后的下拉箭头, 然后选择"配置"
+					6.2.2 把上述需要修改的两个参数名分别拷贝到 搜索框中, 然后修改, 保存即可. 
+			
+			6.3 回到CM的主页面, 重启Yarn服务即可. 
+			
+		7. 重新执行刚才的调度任务, 会发现, 问题解决了.
+			//回到Hue界面, 找到刚才的调度任务, 直接执行即可. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------presto使用相关--------------------------------------------------------------
+
+----------------添加环境变量-----------
+
+1.编辑 /etc/profile 文件
+vim /etc/profile
+2.在文件末尾添加
+export PATH=$PATH:/export/server/presto/bin
+3.保存退出，并执行以下命令使其生效：
+source /etc/profile
+
+---------------------Presto--集群启停------------------------------------------
+/export/server/presto/bin/launcher start    没配环境变量就写这个绝对路径 
+或者
+launcher start                              配了环境变量可以直接写bin命令
+
+
+---------------------web UI页面-------------------------
+http://192.168.88.80:8090/ui/
+
+
+presto的时间函数特殊，具体如下：
+-- 4. 因为Presto可以连接多种数据源, 例如: MySQL, Hive等, 所以Presto中对于时间格式有特殊的要求, 必须是 年-月-日 时:分:秒 的格式.
+-- Presto中和时间相关的4个函数如下:
+-- 4.1 date_format(timestamp, format)  ==> varchar      作用: 将指定的 日期对象 转换为 字符串操作
+-- 细节: 格式化的时候, 日期模板可以自定义
+select date_format(timestamp '2023-05-30 13:14:21', '%Y/%m/%d %H:%i:%s');       -- 2023/05/30 13:14:21
+select date_format(timestamp '2023/05/30 13:14:21', '%Y/%m/%d %H:%i:%s');       -- 报错, '2023/05/30 13:14:21' 不是Presto中的标准时间格式.
+
+-- 4.2 date_parse(string, format) → timestamp       作用: 用于将字符串的日期数据转换为日期对象
+-- 细节: 解析的时候, 日期模板必须和字符串格式保持一致.
+select date_parse('2023年05月30日 13:14:21', '%Y年%m月%d日 %H:%i:%s');      -- 2023-05-30 13:14:21
+
+-- 4.3 date_add(unit, value, timestamp) → [same as input]       作用: 用于对日期数据进行 加 减 操作
+select date_add('year', 1, timestamp '2023-05-30 13:14:21');      -- 2024-05-30 13:14:21
+select date_add('month', -2, timestamp '2023-05-30 13:14:21');      -- 2023-03-30 13:14:21
+select date_add('day', -30,date '2026-03-14' );                   --2026-02-12
+
+-- 4.4 date_diff(unit, timestamp1, timestamp2) → bigint     作用: 用于比对两个日期之间差值
+select date_diff('year', timestamp '2023-05-30', timestamp '2025-05-30');       -- 2, 后 - 前     这里的timestamp的意思是 标记作用, 标记着后边是时间戳, 而不是字符串.
+
+-- 使用Presto的1个小Bug, 通过Presto插入的数据(insert + select), 通过hive查询, 查询不到.
+
+
+扩展说明: presto日期format格式说明
+	年：%Y
+	月：%m
+	日：%d
+	时：%H
+	分：%i
+	秒：%s
+	周几：%w(0..6)	
+
+
+-----------------------------------------------------------------------------------------------------------
+！！！！！！presto中insert into table......方式插入分区表中时不用写partion (分区字段)，但hive中需要写上partion(分区字段）
+----------------------------------------------------------------------------------------------------------
+
+
+---------------------------Presto--常规优化-------------------------------
+--1）合理设置分区
+	与Hive类似，Presto会根据元信息读取分区数据，合理的分区能减少Presto数据读取量，提升查询性能。
+
+--2）使用列式存储
+	Presto对ORC文件读取做了特定优化，因此在Hive中创建Presto使用的表时，建议采用ORC格式存储。相对于Parquet，Presto对ORC支持更好。
+	Parquet和ORC一样都支持列式存储，但是Presto对ORC支持更好，而Impala对Parquet支持更好。在数仓设计时，要根据后续可能的查询引擎合理设置数据存储格式。
+
+--3）使用压缩
+	数据压缩可以减少节点间数据传输对IO带宽压力，对于即席查询需要快速解压，建议采用Snappy压缩。
+
+--4）预先排序
+	对于已经排序的数据，在查询的数据过滤阶段，ORC格式支持跳过读取不必要的数据。比如对于经常需要过滤的字段可以预先排序。
+
+INSERT INTO table nation_orc partition(p) SELECT * FROM nation SORT BY n_name;
+如果需要过滤n_name字段，则性能将提升。
+SELECT count(*) FROM nation_orc WHERE n_name=’AUSTRALIA’; 
+
+    角度1: SQL常规优化.
+        1. 列裁剪
+            能写 select 列1, 列2 from 表名, 就不要写 select * from 表名
+        2. 分区裁剪
+            select 列1, 列2.. from 分区表 where 分区字段...      如果是分区表, 查询时记得写分区条件.
+        3. group by优化
+            如果是多字段分组, 则分组时按照数据量大小降序排列, 例如: 不要写 group by gender, id  而是写 group by id, gender, 因为id比gender(去重后个数)多
+        4. order by使用limit
+            一方面可以防止将所有数据加载到内存, 导致内存溢出的情况, 另一方面可以提高效率. 类似于: 想要排名年级前5, 首先要做到班级前5.
+        5. 用regexp_like代替多个like语句
+        6. join时候大表放置在左边
+            大表 join 小表, 而不是  小表 join 大表, 因为Presto的底层会默认把左边的表拆分成N份, 然后依次和右边的表 join连接查询.
+        7. 替换非ORC格式的Hive表
+            建议创建Hive表的时候, 使用 orc + snappy方式, 不要用默认的 行存储(TextFile).
+
+    角度2: 内存优化.  我们只需要关心如下的3个问题即可.
+        1. Presto的内存分类, 分为: user memory(用户内存)  和  系统内存(System Memory)
+        2. 谁来管理内存.
+            Presto通过内存池来管理内存, 它(内存池)又分为两种情况,
+            常规内存池: General Pool, 优先用这里.
+            预留内存池: Reserved Pool, 常规内存不够用了, 才会用这里.
+        3. 和Presto的内存调优参数有哪些(了解).
+
+
+
+
+-------------------------presto导出到MySQL时注意事项---------------------------------------------
+1.建库在MySQL中，建表在presto中（string类型换成varchar)
+2.presto不能删除MySQL中数据，要在MySQL中执行删除命令；
+
+
+
+
+-----------------------githup加速-----------------------------------------------------------------
+
+在Windows中：C:\Windows\System32\drivers\etc\hosts 加入以下内容：
+#GitHub
+140.82.114.4 github.com
+199.232.69.194 github.global.ssl.fastly.net
+
+
+
+
+---------------------------在自己Windows本地生成一对公私钥-----------------------------------------------------
+step1：执行shell命令：ssh-keygen -t rsa
+
+step2：找到自己的公钥的位置：当前用户的家目录下：C:\user\用户名 \ .ssh
+
+
+#------------------------------------MySQL----------------------------------------
+查看MySQL中的函数用法    help '函数名'
