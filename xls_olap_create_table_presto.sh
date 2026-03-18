@@ -8,21 +8,15 @@ fi
 
 PRESTO_HOME=/export/server/presto/bin/presto
 ${PRESTO_HOME} --catalog mysql \
-               --server 192.168.88.80:3306 \
-			   #--schema yp_rpt
-			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
+               --server 192.168.88.80:8090 \
 			   --file /mycode/create_rpt_sale_tables_presto.sql
 			   
 			   
 ${PRESTO_HOME} --catalog hive \
-               --server 192.168.88.80:3306 \
-			   #--schema yp_rpt
-			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
-			   --file /mycode/create_rpt_sku_tables-presto.sql
+               --server 192.168.88.80:8090 \
+			   --file /mycode/create_rpt_sku_tables_presto.sql
 			   
 			   
 ${PRESTO_HOME} --catalog hive \
-               --server 192.168.88.80:3306 \
-			   #--schema yp_rpt
-			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
+               --server 192.168.88.80:8090 \
 			   --file /mycode/create_rpt_user_tables_presto.sql
