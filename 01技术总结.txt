@@ -143,11 +143,168 @@ conda deactivate myenv
 
 
 
+--------------------------------pandas库的使用-------------------
+
+
+----------series对象
+
+# 使用默认自增索引
+s2 = pd.Series([1, 2, 3])
+print(s2)
+# 自定义索引
+s3 = pd.Series([1, 2, 3], index=['A', 'B', 'C'])
+s3
+
+
+结果为:
+0    1
+1    2
+2    3
+dtype: int64
+A    1
+B    2
+C    3
+dtype: int64
 
 
 
 
+#使用元组
+tst = (1,2,3,4,5,6)
+pd.Series(tst)
 
+#使用字典：
+dst = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6}
+pd.Series(dst)
+
+---------Series对象常用API---------------
+s4 = pd.Series([i for i in range(6)], index=[i for i in 'ABCDEF'])
+
+
+
+# s对象有多少个值，int
+len(s4) 
+s4.size
+
+# s对象有多少个值，单一元素构成的元组 (6,)
+s4.shape 
+
+# 查看s对象中数据的类型
+s4.dtypes
+
+# s对象转换为list列表
+s4.to_list()
+
+# s对象的值 array([0, 1, 2, 3, 4, 5], dtype=int64)
+s4.values 
+
+# s对象的值转换为列表
+s4.values.tolist() 
+
+# s对象可以遍历，返回每一个值
+for i in s4: 
+    print(i)
+
+# 下标获取具体值
+s4[1] 
+
+# 返回前2个值，默认返回前5个
+s4.head(2) 
+
+# 返回最后1个值，默认返回后5个
+s4.tail(1) 
+
+# 获取s对象的索引 Index(['A', 'B', 'C', 'D', 'E', 'F'], dtype='object')
+s4.index 
+
+# s对象的索引转换为列表
+s4.index.to_list() 
+
+# s对象中数据的基础统计信息
+s4.describe()
+# 返回结果及说明如下
+#count    6.000000 # s对象一共有多少个值
+#mean     2.500000 # s对象所有值的算术平均值
+#std      1.870829 # s对象所有值的标准偏差
+#min      0.000000 # s对象所有值的最小值
+#25%      1.250000 # 四分位 1/4位点值
+#50%      2.500000 # 四分位 1/2位点值
+#75%      3.750000 # 四分位 3/4位点值
+#max      5.000000 # s对象所有值的最大值
+#dtype: float64
+# 标准偏差是一种度量数据分布的分散程度之标准，用以衡量数据值偏离算术平均值的程度。标准偏差越小，这些值偏离平均值就越少，反之亦然。
+# 四分位数（Quartile）也称四分位点，是指在统计学中把所有数值由小到大排列并分成四等份，处于三个分割点位置的数值。
+
+# seriest对象转换为df对象
+s4.to_frame()
+s4.reset_index()
+
+
+
+-----------DataFrame对象常用API-
+使用字典加列表创建df，使默认自增索引
+df1_data = {
+    '日期': ['2021-08-21', '2021-08-22', '2021-08-23'],
+    '温度': [25, 26, 50],
+    '湿度': [81, 50, 56] 
+}
+df1 = pd.DataFrame(data=df1_data)
+
+
+
+使用列表加元组创建df，并自定义索引
+df2_data = [
+    ('2021-08-21', 25, 81),
+    ('2021-08-22', 26, 50),
+    ('2021-08-23', 27, 56)
+]
+
+df2 = pd.DataFrame(
+    data=df2_data, 
+    columns=['日期', '温度', '湿度'],
+    index = ['row_1','row_2','row_3'] # 手动指定索引
+)
+
+# 返回df的行数
+len(df2)
+
+# df中数据的个数
+df2.size
+
+# df中的行数和列数，元组 (行数, 列数)
+df2.shape
+
+# 返回列名和该列数据的类型
+df2.dtypes
+
+# 返回nparray类型的2维数组，每一行数据作为一维数组，所有行数据的数组再构成一个二维数组
+df2.values
+
+# 返回df的所有列名
+df2.columns
+
+# df遍历返回的只是列名 
+for col_name in df2: 
+    print(col_name)
+
+# 返回df的索引对象
+df2.index
+
+# 返回第一行数据，默认前5行
+df2.head(5)
+
+# 返回倒数第1行数据，默认倒数5行
+df2.tail(5)
+
+# 返回df的基本信息：索引情况，以及各列的名称、数据数量、数据类型
+df2.info() # series对象没有info()方法
+
+# 返回df对象中所有数字类型数据的基础统计信息
+# 返回对象的内容和Series.describe()相同
+df2.describe()
+
+# 返回df对象中全部列数据的基础统计信息
+df2.describe(include='all')
 
 
 
@@ -3137,6 +3294,64 @@ print(list(jieba.cut('武汉市长江大桥', cut_all=True)))
 
 
 
+
+
+
+
+
+---------------------------kafka使用---------------------------------------------------------------
+启动kafka集群，每个节点都要
+
+
+# 首先要每个节点上分别启动zookeeper集群
+zookeeper/bin/zkServer.sh start
+# 到每个分别启动kafka服务
+nohup bin/kafka-server-start.sh config/server.properties 2>&1 >> kafka.out &
+
+参数解释：
+--nohup 守护进程
+--& 后台运行
+-->> kafka.out 把信息重定向到kafka.out
+-- 2>&1 2-系统错误信息 1-系统信息
+
+
+创建Topic
+bin/kafka-topics.sh --create --zookeeper node1:2181 --replication-factor 1 --partitions 3 --topic test
+--kafka-topics.sh 跟topic相关操作的命令脚本
+--create 创建动作
+--zookeeper node1:2181 指定zk的信息用来保存元数据
+--replication 指定副本个数
+--partitions 指定分区个数
+--topic 指定主题名称
+
+
+
+模拟生产消费
+# 启动一个模拟生产者
+bin/kafka-console-producer.sh --broker-list node1:9092 --topic test
+--kafka-console-producer.sh kafka内置的生产者脚本
+--broker-list node1:9092 指定broker信息用来生产数据
+--topic 用来指定要生产数据的主题
+# 启动一个模拟消费者
+bin/kafka-console-consumer.sh --bootstrap-server node1:9092 --topic test --from-beginning
+--kafka-console-consumer.sh kafka内置的消费者脚本
+--bootstrap-server node1:9092 
+--topic 指定主题
+--from-beginning 设置消费策略从最早开始
+
+
+查看Topic列表
+bin/kafka-topics.sh --list --zookeeper node1:2181
+
+查看Topic详情
+bin/kafka-topics.sh --describe --zookeeper node1:2181 --topic test
+
+删除Topic
+bin/kafka-topics.sh --delete --zookeeper node1:2181 --topic test
+
+修改Topic
+# 修改分区数量（分区数量只能增加不能减少，副本数量不能修改）
+bin/kafka-topics.sh --alter --zookeeper node1:2181 --topic test --partitions 4
 
 
 
