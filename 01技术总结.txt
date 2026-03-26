@@ -16,6 +16,144 @@ windos键+D   快速切换回桌面
 
 
 
+--------------------------python使用----------------------------------------------------------------------------------------------------------------
+
+pip install 包名 -i https://xxxx（镜像源）     安装各种工具包
+
+
+-------各种镜像源---------------------------------------------------------------------------------------
+
+阿里云：
+https://mirrors.aliyun.com/pypi/simple
+清华：
+https://pypi.tuna.tsinghua.edu.cn/simple
+中国科技大学 
+https://pypi.mirrors.ustc.edu.cn/simple
+
+官方默认镜像：
+https://pypi.python.org/simple
+
+# 临时镜像  安装包
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pyspark==2.4.8
+
+# 永久镜像
+pip install --upgrade pip
+pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
+
+pip install pyspark==2.4.8
+
+
+--------------永久设置镜像源为国内------------------------------------------------------------
+方法一；
+# 设置主源为清华源
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple/
+# 添加阿里云作为备用源（extra-index-url 可以重复使用多次来添加多个备用源）
+pip config set global.extra-index-url "https://mirrors.aliyun.com/pypi/simple/"
+
+方法二：
+手动改这个文件也可以/root/.config/pip/pip.conf
+
+查看当前的配置列表，确认 index-url 是否已经更改为清华源地址：pip config list
+
+
+
+
+
+
+
+
+
+
+
+------------------------anaconda的使用-----------------------------------------------------------------
+anaconda国内镜像源：
+  https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+  https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
+  https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
+  https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
+  https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+  https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+  https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+
+
+
+安装库: 
+	conda install  包名
+	pip install -i 镜像地址 包名
+	pip install -i https://mirrors.ustc.edu.cn/pypi/web/simple pyspark
+卸载库: 
+	conda uninstall 包名
+	pip uninstall 包名
+
+设置 anaconda下载的库的镜像地址:  
+	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+	conda config --set show_channel_urls yes
+
+如何使用anaconda构建虚拟(沙箱)环境:
+
+1- 查看当前有那些虚拟环境: 
+conda env list
+
+2- 如何创建一个新的虚拟环境
+conda create 虚拟环境名称  python=版本号
+
+例如: 创建一个pyspark_env 虚拟环境
+conda create -n pyspark_env  python=3.8
+例如: 创建一个itcast 虚拟环境
+conda create -n itcast python=3.11
+
+3- 如何进入虚拟环境(激活)
+conda activate pyspark_env
+或者
+source activate pyspark_env 
+
+
+4- 如何退出虚拟环境:
+conda deactivate
+或者
+deactivate pyspark_env 
+
+
+conda主要作用是创建和管理虚拟环境（沙箱sandbox环境）
+pip安装卸载python的包
+
+
+
+conda虚拟环境 命令
+查看所有环境
+conda info --envs
+
+新建虚拟环境
+conda create -n myenv python=3.6 
+
+删除虚拟环境
+conda remove -n myenv --all 
+
+激活虚拟环境
+conda activate myenv
+source activate base 
+
+退出虚拟环境
+conda deactivate myenv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -85,6 +223,22 @@ which cd
 find 目录地址 -name '查找条件'		# 根据文件名查找.
 find 目录地址 -size +100M		   # 根据大小查找指定目录下的 满足条件的文件或者目录路径.
 
+# 搜索presto相关的目录和文件
+sudo find / -name "*presto*" -type d 2>/dev/null
+
+# 或者更精确地搜索presto可执行文件
+sudo find / -name "presto" -type f 2>/dev/null
+sudo find / -name "prestocli" -type f 2>/dev/null
+
+		参数说明：
+
+		2>/dev/null：过滤掉权限不足的错误信息
+
+		-type d：只搜索目录
+
+		-type f：只搜索文件
+		
+		
 # grep命令, 作用: 从文件中过滤出指定的信息. 
 # 格式
 	grep '关键字' 要被检索的文件夹路径.  
@@ -141,6 +295,17 @@ echo 'hello' >> 1.txt
 
 ------------------Linux的软件安装------------------------------------------------
 yum -y [install | remove | search] 要安装的包名 	# -y的意思是: 不询问, 直接同意
+
+注意当yum不能用时，按以下步骤做：
+1.备份原文件：
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+
+2.下载阿里云源：
+curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+
+3.清理并生成缓存：
+yum clean all && yum makecache
+
 
 
 
@@ -634,7 +799,7 @@ $PRESTO_CLI --server $SERVER_URL \
 
 
 ------------
-脚本实例3（自己项目）：
+脚本实例3（自己项目presto调用hive库）：
 #!/bin/bash
 # 昨天
 if [[ $1 == "" ]];then
@@ -646,23 +811,36 @@ fi
 PRESTO_HOME=/export/server/presto/bin/presto
 ${PRESTO_HOME} --catalog hive \
                --server 192.168.88.80:8090 \
-			   #--schema yp_rpt
-			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
 			   --file /mycode/insert_rpt_sale.sql
 			   
 			   
 ${PRESTO_HOME} --catalog hive \
                --server 192.168.88.80:8090 \
-			   #--schema yp_rpt
-			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
 			   --file /mycode/insert_rpt_sku.sql
 			   
 			   
 ${PRESTO_HOME} --catalog hive \
                --server 192.168.88.80:8090 \
-			   #--schema yp_rpt
-			   #--execute "select * from yp_dws.dws_sale_daycount limit 10;"
-			   --file /mycode/insert_rpt_user.sql
+			   --execute "select * from yp_dws.dws_sale_daycount limit 10;"
+
+
+
+
+
+脚本实例4（自己项目presto调用mysql库）：
+#!/bin/bash
+# 昨天
+if [[ $1 == "" ]];then
+   TD_DATE=`date -d '1 days ago' "+%Y-%m-%d"`
+else
+   TD_DATE=$1
+fi
+
+PRESTO_HOME=/export/server/presto/bin/presto
+${PRESTO_HOME} --catalog mysql \
+               --server 192.168.88.80:8090 \
+			   --file /mycode/export_presto2mysql_presto.sql
+
 
 
 
@@ -2621,6 +2799,347 @@ SELECT count(*) FROM nation_orc WHERE n_name=’AUSTRALIA’;
 -------------------------presto导出到MySQL时注意事项---------------------------------------------
 1.建库在MySQL中，建表在presto中（string类型换成varchar)
 2.presto不能删除MySQL中数据，要在MySQL中执行删除命令；
+
+
+
+
+
+--------------------------spark使用-------------------------------------------------------------
+配置环境变量
+
+vim /etc/profile
+添加以下内容
+#SPARK_HOME
+export SPARK_HOME=/root/anaconda3/bin
+export PATH=$PATH:$SPARK_HOME
+
+重新加载环境变量: source /etc/profile
+
+
+这样就能输入pyspark启动了
+
+--启动Hadoop集群社区版
+start-all.sh
+
+--关闭Hadoop集群社区版
+stop-all.sh
+
+
+## 启动MRHistoryServer服务，在node1执行命令
+mr-jobhistory-daemon.sh start historyserver
+
+
+## 启动Spark HistoryServer服务，，在node1执行命令
+/export/server/spark/sbin/start-history-server.sh
+
+
+----------------spark后台启动（就是替换hiveserver2，即替换mr的，这时候datagrip就可以连接了）-------------------------------------
+运行以下命令：（这时候hiveserver2要关闭，不然会冲突）
+cd /export/server/spark
+
+./sbin/start-thriftserver.sh \
+--hiveconf hive.server2.thrift.port=10000 \
+--hiveconf hive.server2.thrift.bind.host=node1 \
+--hiveconf spark.sql.warehouse.dir=hdfs://node1:8020/user/hive/warehouse \
+--master local[*]
+
+
+可以通过webUI   node1:4040查看其状态
+
+
+
+
+------------------spark-submit结合shell提交python脚本-------------------------
+
+案例：
+#/bin/bash
+
+
+SPARK_HOME=/export/server/spark
+${SPARK_HOME}/bin/spark-submit \
+--master yarn \
+--deploy-mode cluster \
+--conf "spark.pyspark.driver.python=/root/anaconda3/bin/python3" \
+--conf "spark.pyspark.python=/root/anaconda3/bin/python3" \
+/tmp/pycharm_project_780/03spark_wordcount_yarn.py
+
+参数解释：如果python脚本里写了对应的参数，执行时就不会用shell脚本里的参数
+Options:（都采用前面小写的即可）
+  --master MASTER_URL         spark://host:port, mesos://host:port, yarn,
+                              k8s://https://host:port, or local (Default: local[*]).
+							  表示应用运行的模式，要么本地，要么各种集群
+							  
+  --deploy-mode DEPLOY_MODE   Whether to launch the driver program locally ("client") or
+                              on one of the worker machines inside the cluster ("cluster")
+                              (Default: client).
+							  driver运行的位置，部署模式（默认"client"本地模式，还有"cluster"集群模式）
+							  
+  --class CLASS_NAME          Your application's main class (for Java / Scala apps).
+							  类名称
+  
+  --name NAME                 A name of your application. 运行时的名称
+  
+  --jars JARS                 Comma-separated list of jars to include on the driver
+                              and executor classpaths.
+							  运行时需要依赖的jar包，多个时用，隔开
+							  
+  --packages                  Comma-separated list of maven coordinates of jars to include
+                              on the driver and executor classpaths. Will search the local
+                              maven repo, then maven central and any additional remote
+                              repositories given by --repositories. The format for the
+                              coordinates should be groupId:artifactId:version.
+  --exclude-packages          Comma-separated list of groupId:artifactId, to exclude while
+                              resolving the dependencies provided in --packages to avoid
+                              dependency conflicts.
+  --repositories              Comma-separated list of additional remote repositories to
+                              search for the maven coordinates given with --packages.
+  --py-files PY_FILES         Comma-separated list of .zip, .egg, or .py files to place
+                              on the PYTHONPATH for Python apps.
+  --files FILES               Comma-separated list of files to be placed in the working
+                              directory of each executor. File paths of these files
+                              in executors can be accessed via SparkFiles.get(fileName).
+  --archives ARCHIVES         Comma-separated list of archives to be extracted into the
+                              working directory of each executor.
+
+  --conf, -c PROP=VALUE       Arbitrary Spark configuration property. 
+							 指定配置参数，一般用  "配置参数"  形式
+  
+  --properties-file FILE      Path to a file from which to load extra properties. If not
+                              specified, this will look for conf/spark-defaults.conf.
+
+  --driver-memory MEM         Memory for driver (e.g. 1000M, 2G) (Default: 1024M).
+								指定driver进程内存大小，默认是1G,他不是主要干活的，不用给太大
+  
+  --driver-java-options       Extra Java options to pass to the driver.
+  --driver-library-path       Extra library path entries to pass to the driver.
+  --driver-class-path         Extra class path entries to pass to the driver. Note that
+                              jars added with --jars are automatically included in the
+                              classpath.
+
+  --executor-memory MEM       Memory per executor (e.g. 1000M, 2G) (Default: 1G).
+							指定executor进程内存大小，默认是1G
+							
+							
+							
+  --proxy-user NAME           User to impersonate when submitting the application.
+                              This argument does not work with --principal / --keytab.
+
+  --help, -h                  Show this help message and exit.
+  --verbose, -v               Print additional debug output.
+  --version,                  Print the version of current Spark.
+
+ Cluster deploy mode only:
+  --driver-cores NUM          Number of cores used by the driver, only in cluster mode
+                              (Default: 1).
+							  在部署模式为集群模式时driver的核数，默认是1
+							  
+
+ Spark standalone or Mesos with cluster deploy mode only:
+  --supervise                 If given, restarts the driver on failure.
+							在部署模式为standalone集群模式时，driver失败了会自己重启
+  
+  
+
+ Spark standalone, Mesos or K8s with cluster deploy mode only:
+  --kill SUBMISSION_ID        If given, kills the driver specified.
+  --status SUBMISSION_ID      If given, requests the status of the driver specified.
+
+ Spark standalone, Mesos and Kubernetes only:
+  --total-executor-cores NUM  Total cores for all executors.
+								所有executor的总核数
+
+ Spark standalone, YARN and Kubernetes only:
+  --executor-cores NUM        Number of cores used by each executor. (Default: 1 in
+                              YARN and K8S modes, or all available cores on the worker
+                              in standalone mode).
+							  每一个executor的核数
+
+ Spark on YARN and Kubernetes only:
+  --num-executors NUM         Number of executors to launch (Default: 2).
+                              If dynamic allocation is enabled, the initial number of
+                              executors will be at least NUM.
+							  yarn集群下executors的数量
+							  
+							  
+  --principal PRINCIPAL       Principal to be used to login to KDC.
+  --keytab KEYTAB             The full path to the file that contains the keytab for the
+                              principal specified above.
+
+ Spark on YARN only:
+  --queue QUEUE_NAME          The YARN queue to submit to (Default: "default").
+
+
+----------RDD相关算子---------------------------
+RDD相关算子
+	--在spark中，把支持接收函数函数（高阶函数）或者具有特殊功能的函数称为算子
+	1 transformation算子
+		特点
+			转换算子:
+			1 返回的结果都是新的RDD（RDD是只读）
+			2 所有的转换算子都是惰性的，只有遇到action算子才会真正的执行
+				代码中有几个action就有几个任务
+			3 RDD不存储数据，只存储转换的规则，遇到action算子后对数据进行处理
+		常见算子
+			map算子：一对一的转换操作
+				接收函数
+			groupBy算子：进行分组操作的，根据接收的函数（每个元素传给接收到函数，返回的值作为key）进行分组操作
+				接收函数
+			filter算子
+				根据接收的函数对原始数据进行过滤操作，接收函数定义过滤规则
+					接收函数，接收的函数的返回值是布尔类型
+			flatMap算子
+				先做map做的事情
+				接着再进行降维（拉平）操作
+				接收函数
+			union求并集 insetsection 求交集
+			groupByKey算子，仅仅做了分组操作
+				按照key进行分组，并且把value放在一个可迭代对象
+				使用groupByKey和reduce实现reduceByKey和collect()
+			reduceByKey算子
+				按照key进行分组，再按接收的函数对每个分组进行聚合操作
+			sortByKey算子
+				按照key进行排序，可以升序或者降序
+				sortBy
+					接收一个函数，这个接收的函数确定按照哪个元素进行排序
+	2 action算子
+		特点
+			动作算子:
+			1 返回的结果不是RDD或者没有返回值
+				collect
+					返回结果是list
+				saveAsTextFile
+					没有返回值
+			2 所有的动作算子都是立即执行的，每个action操作都会触发任务
+				每个action操作都会把对应的rdd从头到尾计算一遍
+					可以通过缓存或者检查点避免重复计算
+		常见算子
+			collect()算子
+				作用：收集各个分区处理之后的结果，并且放在一个列表中
+			first() 算子
+				获取第一个元素
+			take(n) 算子
+				获取前n个元素
+			count算子
+				统计rdd中元素的个数
+			top(n)算子
+				格式top(n, [fn])，对数据进行降序排序取出前n个
+			reduce()算子
+				reduce(fn)，根据接收的fn对调用reduce的rdd进行聚合操作
+				rdd1 : [1,2,3,4,5]
+					rdd1.reduce(lambda x,y:x+y)
+			takeSample算子
+				格式 takeSample(是否放回，抽取几个，随机种子)
+
+
+
+-----------------安装jieba分词库-------------------
+pip install -i https://mirrors.ustc.edu.cn/pypi/web/simple jieba
+
+import jieba
+
+print(list(jieba.cut('商品和服务')))
+print(list(jieba.cut('商品和服务', cut_all=True)))
+print(list(jieba.cut('武汉市长江大桥')))
+print(list(jieba.cut('武汉市长江大桥', cut_all=True)))
+运行结果:
+['商品', '和', '服务']
+['商品', '和服', '服务']
+['武汉市', '长江大桥']
+['武汉', '武汉市', '市长', '长江', '长江大桥', '大桥']
+
+
+
+
+
+
+---------- Spark SQL的相关的清洗API
+1- 去重API:  df.dropDuplicates()
+说明: 当不加参数的时候, 默认对数据整体进行去重,  同样支持针对指定列进行去重操作
+
+2-  删除null值数据:  df.dropna()
+说明: 默认支持对所有列进行判断, 如果有一列的对应值为null, 就会将为null这一行数据全部都删除, 也支持针对某些列处理
+
+
+3- 替换null值:  df.fillna()
+
+说明: 将表中为null的数据替换为指定的值. 同样也可以针对某些列来处理
+
+
+
+
+----------------------SQL函数的分类说明-------------------------------------------
+
+回顾 SQL 函数的分类:
+
+- UDF:   用户自定义函数
+  - 特点: 一进一出  大部分的内置函数都是属于UDF函数  
+  - 比如  substr()  
+- UDAF:  用户自定义聚合函数
+  - 特点: 多进一出 
+  - 比如: sum()  count() avg()....
+- UDTF: 用户自定义表生成函数
+  - 特点:  一进多出  (给一个数据, 返回多行或者多列的数据)
+  - 比如: explode()  爆炸函数
+
+
+
+其实不管是spark SQL中  内置函数, 还是hive中内置函数, 其实也都是属于这三类中其中一类
+
+
+-----------------------Spark原生自定义UDF函数-----------------------------
+
+1- 第一步: 根据也要功能要求,  定义一个普通的Python的函数: 
+
+2- 第二步: 将这个python的函数注册到Spark SQL中:  
+	注册方式有以下二种方案: 
+		方式一:  可适用于  SQL 和 DSL
+			udf对象 = sparkSession.udf.register(参数1, 参数2,参数3)
+			
+			参数1: udf函数的函数名称, 此名称用于在SQL风格中使用
+			参数2: 需要将那个python函数注册为udf函数
+			参数3: 设置python函数返回的类型
+			
+			udf对象 主要使用在DSL中
+			如下：
+			    def concat_udf(name: str) -> str:
+					return name + '_itcast'
+					
+					
+	 concat_udf_dsl = spark.udf.register('concat_udf_sql',concat_udf,StringType())	
+		
+		
+		
+		方式二: 仅适用于 DSL方案
+			udf对象 =F.udf(参数1,参数2)
+			
+			参数1: 需要将那个python函数注册为udf函数
+			参数2: 设置python函数返回的类型
+			udf对象 主要使用在DSL中
+			
+			concat_udf_dsl_2 = F.udf(concat_udf,StringType())
+				
+			
+		方式二还有一种语法糖写法:  @F.udf(设置返回值类型)  底层走的是装饰器
+			放置在普通的python函数的上面
+			
+			    @F.udf(returnType=StringType())
+				def concat_udf(name: str) -> str:
+					return name + '_itcast'
+			
+			
+			
+
+3- 在SQL或者 DSL中使用即可
+
+
+
+
+
+
+
+
+
+
 
 
 
