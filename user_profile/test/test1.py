@@ -1,0 +1,1 @@
+print(dict(zip([1,2],[3,4])).items())
