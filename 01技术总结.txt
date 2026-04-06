@@ -56,7 +56,63 @@ pip config set global.extra-index-url "https://mirrors.aliyun.com/pypi/simple/"
 查看当前的配置列表，确认 index-url 是否已经更改为清华源地址：pip config list
 
 
+------------python利用正则表达式解析nginx日志解析---------------------------------
+'''
+import re
 
+if __name__ == '__main__':
+
+    # 编译一个正则表达式对象，用于匹配日志格式
+    # (?P<name>...) 是一个命名组，用于匹配相应的字段
+    obj = re.compile(
+        r'(?P<ip>.*?) - - \[(?P<time>.*?)\] "(?P<request>.*?)" (?P<status>.*?) (?P<bytes>.*?) "(?P<referer>.*?)" "(?P<ua>.*?)" "(?P<proxy_address>.*)"')
+
+
+
+    nginx_log = [
+        '224.220.73.29 - - [07/May/2022:11:40:36 +0800] "GET /pa18shopnst/nstShop/128.html HTTP/1.1" 200 419 "http://baoxian.htv.com/pa18shopnst/" "Mozilla/5.0 (X11; OpenBSD i386) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36" "-"',
+        '224.192.169.90 - - [07/May/2022:11:40:36 +0800] "GET /zaixiangoumai/chexian/chexian.shtml HTTP/1.1" 200 964 "http://baoxian.htv.com?item=室内财产全方位保障" "Mozilla/5.0 (Linux; Android 10; PACM00 Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0" "-"',
+        '67.17.10.89 - - [07/May/2022:11:40:36 +0800] "GET /pa18shopnst/nstShop/index.html#/productInfo/resources/list?type=FILE&_t=0.7003008955390666 HTTP/1.1" 200 487 "http://baoxian.htv.com?item=汽车保险" "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)" "-"',
+    ]
+    
+    
+    # 遍历日志列表，使用正则表达式匹配日志格式
+    for line in nginx_log:
+        result = obj.match(line)
+        ip = result.group("ip")
+        # ip = result.group(1)
+        time = result.group("time")
+        # time = result.group(2)
+        request = result.group("request")
+        status = result.group("status")
+        bytes = result.group("bytes")
+        referer = result.group("referer")
+        ua = result.group("ua")
+        proxy_address = result.group("proxy_address")
+        print(
+            "nginx解析日志后: ip:{ip}, time:{time}, request:{request}, status:{status}, bytes:{bytes}, referer:{referer}, ua:{ua}, proxy_address:{proxy_address}"
+            .format(ip=ip, time=time, request=request, status=status, bytes=bytes, referer=referer, ua=ua,
+                    proxy_address=proxy_address))
+ 
+
+
+'''
+
+
+
+
+
+---------------------------------------python捕捉错误---------------------------------------------------------
+    try:
+        response = reader.city(ip)
+        # 使用get方法，如果键不存在返回默认值
+        return response.city.names.get('zh-CN', 
+               response.city.names.get('en', "Unknown"))
+    except Exception as e:
+        return "Unknown"
+
+
+字典取值时尽量用get('键名'，默认值)，这样找不到可以返回默认值，不会报错
 
 
 
@@ -3297,9 +3353,364 @@ print(list(jieba.cut('武汉市长江大桥', cut_all=True)))
 
 
 
+---------------------spark_datafram常用函数------------------------------------------
+
+
+
+show() 查看内容
+
+printSchema() 查看表结构
+
+get_json_object("value", '$.deviceID').  解析json字符串
+
+json_tuple("value","deviceID","deviceType", "deviceSignal") 解析json字符串
+
+foreach函数：foreach() 允许在每一行上自定义写入逻辑
+
+foreachBatch函数：foreachBatch允许在每个微批次的输出上进行任意操作和自定义逻辑
+
+F.withColumn()增加新列
+
+F.lit()用固定值给新列赋值，而且只能str类型
+
+sort_dict = dict(sorted(cluster_dict.items(),key=lambda x:x[1],reverse=False))  字典排序
+
+rule_dict = dict(zip(sort_dict.keys(),tag5_list)) 两个列表形成字典
+dict(zip([1,2],[3,4])) 两个列表形成字典
+
+
+datetime.datetime.strptime(time_str, '%d/%b/%Y:%H:%M:%S')将对应样式的字符串转化为时间戳
+
+strftime('%Y-%m-%d %H:%M:%S')将时间戳转化成对应样式的字符串
+
+
+
+
+
+F.regexp_extract('value',regexp_str,1)  利用正则表达式解析日志等文本如nginx日志
+第一个参数：列名
+第二个参数：正则表达式(`Java风格的`)
+第三个参数 ：对应的角标, 这里只能传角标不能传别名, 因为要求数据类型是int
+
+
+
+对应nginx日志正则表达式：
+# 正则表达式
+java_regexp_str: str = '(?<ip>\d+\.\d+\.\d+\.\d+) (- - \[)(?<datetime>[\s\S]+)(?<t1>\][\s"]+)(?<request>[A-Z]+) (?<url>[\S]*) (?<protocol>[\S]+)["] (?<code>\d+) (?<sendbytes>\d+) ["](?<refferer>[\S]*) ["](?<useragent>[\S\s]+)["] ["](?<proxyaddr>[\S\s]+)["]'
+
+
+
+----------------------------------nginx日志处理---------------------------------------------------
+
+
+-----------------------将IP地址转换成地理位置--------------------------------------------
+在线方式
+http://ip-api.com/json/117.136.12.79?lang=zh-CN
+https://opendata.baidu.com/api.php?query=120.10.33.48&co=&resource_id=6006&oe=utf8
+https://whois.pconline.com.cn/ipJson.jsp?ip=120.10.33.48&json=true
+http://ip.ws.126.net/ipquery?ip=117.136.12.79
+
+示例一：
+def ip_to_address(ip):
+ """
+ 根据ip得到地理位置
+ :param ip:用户访问保险公司的网站或app，发送请求的ip地址
+ :return:
+    1. 淘宝的API（推荐）：http://ip.taobao.com/service/getIpInfo.php?ip=110.84.0.129
+    2. 国外freegeoip.net（推荐）：http://freegeoip.net/json/110.84.0.129 这个还提供了经纬度信息（但不一定准）
+    3. 新浪的API：http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=110.84.0.129
+    4. 腾讯的网页查询(返回的非json格式): http://ip.qq.com/cgi-bin/searchip?searchip1=110.84.0.129
+    5. ip.cn的网页（返回的非json格式）：http://www.ip.cn/index.php?ip=110.84.0.129
+    6. ip-api.com： http://ip-api.com/json/110.84.0.129
+
+ 推荐：离线处理：https://www.jianshu.com/p/eb756fc2d3b8
+
+ http://ip-api.com/json/117.136.12.79?lang=zh-CN
+ https://opendata.baidu.com/api.php?query=120.10.33.48&co=&resource_id=6006&oe=utf8
+ https://whois.pconline.com.cn/ipJson.jsp?ip=120.10.33.48&json=true
+ http://ip.ws.126.net/ipquery?ip=117.136.12.79 返回值非json
+ """
+ resp_content = requests.get('https://opendata.baidu.com/api.php?query=%s&co=&resource_id=6006&oe=utf8' % ip).content
+ txt = json.loads(resp_content, encoding="utf-8")
+ location: str = txt.get('data')[0].get('location')
+ if location.__contains__('本地'):
+     return '本地局域网'
+ else:
+     return f"{location.split(' ')[0]}"
+
+
+
+
+
+离线方式：
+先安装pip install geoip2  -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+reader = geoip2.database.Reader('./GeoLite2-City.mmdb')
+response = reader.city('112.74.207.96')
+print(response)
+# 有多种语言，我们这里主要输出英文和中文
+print("你查询的IP的地理位置是:")
+print("地区：{}({})".format(response.continent.names["es"],response.continent.names["zh-CN"]))
+print("国家：{}({}) ，简称:{}".format(response.country.name,response.country.names["zh-CN"],response.country.iso_code))
+print("洲／省：{}({})".format(response.subdivisions.most_specific.name,response.subdivisions.most_specific.names["zh-CN"]))
+print("城市：{}({})".format(response.city.name,response.city.names["zh-CN"]))
+print("经度：{}，纬度{}".format(response.location.longitude,response.location.latitude))
+print("时区：{}".format(response.location.time_zone))
+print("邮编:{}".format(response.postal.code))
+
+
+
+-------------------user agent字符串解析----------------------------------------------------
+导入包
+from user_agents import parse
+
+print(ua_parser.parsers.parse(ua).os.family)
+print(ua_parser.parsers.parse(ua).device.family)
+print(ua_parser.parsers.parse(ua).browser.family)
+
+
+
+------------------spark结构化流写入mysql需要通过foreachBatch（）完成------------------------
+
+实例如下：
+
+ def foreach_func(df: DataFrame, batchId):
+     """
+     对数据流进行按批次处理
+     :param df: 当前批次的数据
+     :param batchId: 当前批次id
+     :return:
+     """
+     print("当前写入数据库的批次为：", batchId)
+     df.write \
+         .mode("overwrite") \
+         .format("jdbc") \
+         .option("driver", "com.mysql.jdbc.Driver") \
+         .option("url", "jdbc:mysql://up01:3306?rewriteBatchedStatements=true") \
+         .option("dbtable", "htv_insurance_stream_db.nginx_log_result") \
+         .option("user", "root") \
+         .option("password", "123456") \
+         .option("truncate", "true") \
+         .option("useSSL", "false") \
+         .option("isolationLevel", "NONE") \
+         .option("batchsize", "10") \
+         .save()
+
+
+ # writeStream流的方式输出不支持jdbc
+ # 数据写入mysql df的schema与mysql中表schema要一致
+ result_df.writeStream.foreachBatch(foreach_func) \
+     .outputMode('complete') \
+     .start().awaitTermination()
+
+
+
+
+-------------------------------------完整实-例：--------------------------------------------------------------
+
+import json
+
+import datetime
+
+import geoip2.database
+import user_agents as parser
+import requests
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.types import *
+from pyspark import SparkContext, SparkConf
+import os
+import time
+import pyspark.sql.functions as F
+from pyspark.sql import Window as win
+import pandas as pd
+
+os.environ['SPARK_HOME'] = '/export/server/spark'
+# os.environ['PYSPARK_PYTHON'] = '/root/anaconda3/bin/python'
+# os.environ['PYSPARK_DRIVER_PYTHON'] = '/root/anaconda3/bin/python'
+# os.environ['JAVA_HOME'] = '/export/server/jdk1.8.0_241'
+
+if __name__ == '__main__':
+    # 1 构造spark运行环境
+    spark: SparkSession = SparkSession \
+        .builder \
+        .master('local[*]') \
+        .appName('nginx 日志信息处理') \
+        .config("spark.sql.shuffle.partitions", 2) \
+        .getOrCreate()
+
+    sc: SparkContext = spark.sparkContext
+
+    # 开启arrow配置
+    spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
+
+    # 2 读取文件
+    ka_df = spark.readStream.format('kafka') \
+        .option('kafka.bootstrap.servers', 'up01:9092') \
+        .option('subscribe', 'tfec_user_nginx') \
+        .option('startingOffsets', 'earliest') \
+        .load().selectExpr("CAST(value AS STRING)").select(F.col("value").alias("value"))
+
+    # 3 解析日志
+
+    # ======================== 数据预处理 ===========================
+    # 使用正则表达式解析字符串
+    # 正则表达式
+    java_regexp_str: str = '(?<ip>\d+\.\d+\.\d+\.\d+) (- - \[)(?<datetime>[\s\S]+)(?<t1>\][\s"]+)(?<request>[A-Z]+) (?<url>[\S]*) (?<protocol>[\S]+)["] (?<code>\d+) (?<sendbytes>\d+) ["](?<refferer>[\S]*) ["](?<useragent>[\S\s]+)["] ["](?<proxyaddr>[\S\s]+)["]'
+    real_ip = F.regexp_extract('value', java_regexp_str, 1).alias('real_ip')
+    access_time = F.regexp_extract("value", java_regexp_str,3).alias("access_time")
+    req_method = F.regexp_extract("value", java_regexp_str, 5).alias("req_method")
+    request_uri = F.regexp_extract("value", java_regexp_str, 6).alias("request_uri")
+    status = F.regexp_extract("value", java_regexp_str, 8).alias("status")
+    bytesx = F.regexp_extract("value", java_regexp_str, 9).alias("bytes")
+    referer_url = F.regexp_extract("value", java_regexp_str, 10).alias("referer_url")
+    ua = F.regexp_extract("value", java_regexp_str, 11).alias("ua")
+    proxy_address = F.regexp_extract("value", java_regexp_str, 12).alias("proxy_address")
+
+
+
+    regexp_df = ka_df.select(real_ip, access_time, req_method, request_uri, status, bytesx, referer_url, ua,
+                                    proxy_address)
+    regexp_df.printSchema()
+
+    # # ip转换地址
+    @F.udf()
+    def ip_to_address(ip):
+        # resp_content = requests.get(f"https://opendata.baidu.com/api.php?query={ip}&co=&resource_id=6006&oe=utf8").content
+        # print(resp_content)
+        # time.sleep(5)
+        # txt = json.loads(resp_content, encoding="utf-8")
+        # location1: str = txt.get('data')[0].get('location')
+        # if location1.__contains__('本地'):
+        #     return '本地局域网'
+        # else:
+        #     return f'{location1.split(" ")[0]}'
+        reader = geoip2.database.Reader('./GeoLite2-City.mmdb')
+        if ip is None:
+            return "Unknown"
+        try:
+            response = reader.city(ip)
+            # 使用get方法，如果键不存在返回默认值
+            return response.city.names.get('zh-CN',"Unknown")
+        except Exception as e:
+            return "Unknown"
+
+
+
+
+    address_df1 = regexp_df.withColumn('address',ip_to_address(F.col('real_ip')))
+
+
+    def parser_ua_type(type):
+        """
+        根据type的值确定返回ua中的信息
+        :param type:
+        :return:
+        """
+
+        def parser_ua(ua):
+            """
+            返回设备、系统、浏览器相关信息
+            :param ua:
+            :return:
+            """
+            ua_obj = parser.parsers.parse(ua)
+            # print(ua_obj)
+            if type == 'device':
+                print(ua_obj.device.family)
+                return ua_obj.device.family
+            if type == 'os':
+                return ua_obj.device.brand
+            if type == 'browser':
+                return ua_obj.browser.family
+
+        return F.udf(parser_ua, StringType())
+
+
+    ua_df = address_df1.withColumn('device', parser_ua_type('device')('ua')) \
+        .withColumn('os', parser_ua_type('os')('ua')) \
+        .withColumn('browser', parser_ua_type('browser')('ua'))
+
+
+    # 时间列格式转换
+    @F.udf()
+    def access_time_parser(access_time: str):
+        """
+        对时间列进行格式化处理
+        datetime.datetime.strptime(时间字符串，格式字符串)：将字符串时间类型对象
+        :param access_time:
+        :return:
+        """
+        time_str = access_time.split(' ')[0]
+        return datetime.datetime.strptime(time_str, '%d/%b/%Y:%H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+
+
+    # 进行指标计算
+    result_df = ua_df.groupBy(F.col('real_ip').alias('ip')).agg(
+        F.count('real_ip').alias('pv'),
+        F.lit(1).alias('uv'),
+        F.first('address').alias('area'),
+        F.first('device').alias('device_terminal'),
+        F.first('os').alias('device_brand'),
+        F.first('browser').alias('browser_name'),
+        access_time_parser(F.max('access_time')).alias('access_time'),
+        F.first('status').alias('status_code')
+    ).orderBy('access_time', ascending=False)
+
+    # result_df.writeStream.format('console') \
+    #     .outputMode('complete') \
+    #     .option('truncate', 'false') \
+    #     .start() \
+    #     .awaitTermination()
+
+
+    def foreach_func(df: DataFrame, batchId):
+        """
+        对数据流进行按批次处理
+        :param df: 当前批次的数据
+        :param batchId: 当前批次id
+        :return:
+        """
+        print("当前写入数据库的批次为：", batchId)
+        df.write \
+            .mode("overwrite") \
+            .format("jdbc") \
+            .option("driver", "com.mysql.jdbc.Driver") \
+            .option("url", "jdbc:mysql://up01:3306?rewriteBatchedStatements=true") \
+            .option("dbtable", "htv_insurance_stream_db.nginx_log_result") \
+            .option("user", "root") \
+            .option("password", "123456") \
+            .option("truncate", "true") \
+            .option("useSSL", "false") \
+            .option("isolationLevel", "NONE") \
+            .option("batchsize", "10") \
+            .save()
+
+    result_df.printSchema()
+
+
+    result_df.writeStream.foreachBatch(foreach_func) \
+        .outputMode("complete") \
+        .option('truncate', False) \
+        .start() \
+        .awaitTermination()
+
+
+
+
+
+
+
+
+
+
+
 
 
 ---------------------------kafka使用---------------------------------------------------------------
+
+！！！！！！注意，写入kafka中时必须有名字为value的字段，所有信息都在这个字段（列）里，一般都把他弄成JSON字符串
+
+
 启动kafka集群，每个节点都要
 
 
@@ -3352,6 +3763,612 @@ bin/kafka-topics.sh --delete --zookeeper node1:2181 --topic test
 修改Topic
 # 修改分区数量（分区数量只能增加不能减少，副本数量不能修改）
 bin/kafka-topics.sh --alter --zookeeper node1:2181 --topic test --partitions 4
+
+
+
+
+
+
+具体实例：
+"""
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.types import *
+from pyspark import SparkContext, SparkConf
+import os
+import time
+import pyspark.sql.functions as F
+from pyspark.sql import Window as win
+import pandas as pd
+
+os.environ['SPARK_HOME'] = '/export/server/spark'
+os.environ['PYSPARK_PYTHON'] = '/root/anaconda3/bin/python'
+os.environ['PYSPARK_DRIVER_PYTHON'] = '/root/anaconda3/bin/python'
+os.environ['JAVA_HOME'] = '/export/server/jdk1.8.0_241'
+
+if __name__ == '__main__':
+    # 1 构造spark运行环境
+    spark: SparkSession = SparkSession \
+        .builder \
+        .master('local[*]') \
+        .appName('pyspark') \
+        .config("spark.sql.shuffle.partitions", "1") \
+        .getOrCreate()
+
+    sc: SparkContext = spark.sparkContext
+
+    # 开启arrow配置
+    spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
+
+    # 2 读取文件
+    # 2.1 定义表结构     每个字段（名称，类型，可否为空）
+    schema1 = StructType() \
+        .add('id', IntegerType(), True) \
+        .add('name', IntegerType(), True) \
+        .add('score', IntegerType(), True)
+    # 2.2 读取文件
+    df = spark.readStream.format('kafka') \
+        .option("kafka.bootstrap.servers","node1:9092,node2:9092,node3:9092")\
+        .option("subscribe","search-log-topic")\
+        .option("startingOffsets","earliest")\
+        .load()
+    #                   format:文件格式
+    '''
+    完整如下：
+        SparkSession对象.readStream.format(数据输入格式).\
+                        .option('参数', '取值') 
+                        # option('sep', ' ') 
+                        # option('inferSchema', 'true') 
+                        # option('schema', 'id string, name string, score int')
+                        .schema(schema) # 设置表结构信息
+                        .load(文件路径)
+    '''
+
+
+    df1 : DataFrame = df.selectExpr("cast(value as string)")
+
+    df2 : DataFrame = df1.select(F.json_tuple("value","deviceID","deviceType", "deviceSignal")
+                     .alias("deviceID","deviceType", "deviceSignal"))
+
+    df3 : DataFrame= df2.where("deviceSignal > 30")\
+        .groupby("deviceType")\
+        .agg(
+                F.count("deviceType").alias("cnt"),
+                F.avg("deviceSignal").alias("avg_signal")
+            ).sort("avg_signal", ascending=False)
+
+    df3.printSchema()
+
+    df4 :DataFrame = df3.selectExpr('cast(deviceType as string)',
+                         'cast(cnt as string)',
+                         'cast(avg_signal as string)')
+    df5 = df4.select(F.concat_ws("+"",deviceType","cnt","avg_signal").alias('value'))
+    # 输出到控制台中
+    '''
+    append模式:
+        - 当计算过程中有聚合计算时不能使用append
+        一般用于无状态计算（比如数据的读取、清洗、加载）
+        append输出模型是默认模型
+    
+    complete模式:
+        完整输出：每次输出都所有数据的结果
+        - complete模式只能用于有聚合的计算
+        - 一般用于有状态计算（新的结果需要用到之前的数据结果）
+        
+    update模式:
+        更新输出：每次输出新的数据结果,update模式在有聚合计算时不支持排序
+    '''
+    # df4.writeStream.format('console') \
+    #     .option("truncate", False) \
+    #     .outputMode('complete')\
+    #     .start().awaitTermination()
+
+    df5.writeStream.format('kafka') \
+        .option("kafka.bootstrap.servers", "node1:9092, node2:9092, node3:9092") \
+        .option("topic", "test2") \
+        .option("checkpointLocation", "hdfs://node1:8020/spark/checkpoint/test100") \
+        .outputMode('complete')\
+        .start().awaitTermination()
+
+
+"""
+
+---------------------spark用户画像--------------------------------
+#启动hadoop环境
+
+	up01.sh start 启动hadoop zookeeper hive程序
+
+
+#启动elasticsearch环境
+
+	- 切换到一个普通su es   （elasticsearch不能运行在root用户下）
+	- elasticsearch -d 启动es服务
+	也可以用下面这个命令
+	nohup /home/es/elasticsearch-7.10.2/bin/elasticsearch 2>&1 &
+
+
+
+
+
+---------------------------spark ml 机器学习----------------------------------------------------
+
+
+
+
+-------------------聚类算法Kmeans:-----------------------------
+
+from pyspark.ml import Pipeline
+from pyspark.ml.clustering import KMeans
+from pyspark.ml.evaluation import ClusteringEvaluator
+from pyspark.ml.feature import VectorAssembler
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.types import *
+from pyspark import SparkContext, SparkConf
+import os
+import time
+import pyspark.sql.functions as F
+from pyspark.sql import Window as win
+import pandas as pd
+from base.tagcompelebase import TagCompeleBase
+import numpy as np
+
+os.environ['SPARK_HOME'] = '/export/server/spark'
+os.environ['PYSPARK_PYTHON'] = '/root/anaconda3/bin/python'
+os.environ['PYSPARK_DRIVER_PYTHON'] = '/root/anaconda3/bin/python'
+os.environ['JAVA_HOME'] = '/export/server/jdk1.8.0_241'
+
+# 创建子类，继承父类
+class TagCompletePsm(TagCompeleBase):
+    # 复写get_new_df
+    def get_new_df(self):
+        # 获得5级标签tag5_df
+        tag5_df = self.get_tag5_df()
+        # 获得原始数据es_df
+        es_df = self.get_es_df()
+        # ===================================1、计算 psm 的值==========================================
+        # 1.1优惠金额
+        da = F.col('couponcodevalue').alias('da')
+        # 实收金额
+        pa = F.col('orderamount').alias('pa')
+        # 应收金额
+        ra = da + pa
+
+        # 1.4建立临时表
+        tm_df = es_df.select(ra.alias('ra'), da, pa, F.col('memberid').alias('userId'), F.col('ordersn'))
+        # 1.5查看结果
+        print("==========查看tm_df=========")
+        tm_df.show()
+        # 1.6查看各个统计值
+        print("==========查看tm_df统计=========")
+        tm_df.describe().show()
+
+        # 增加一列是否优惠识别列得到新表rdp_new_df
+        rdp_new_df = tm_df.withColumn('isCoupon', F.when(F.col('da') == 0, 0).otherwise(1))
+        # 查看rdp_new_df
+        print("==========查看rdp_new_df=========")
+        rdp_new_df.show()
+        # 优惠订单数
+        tdon = F.sum(F.col('isCoupon')).alias('tdon')
+        # 总订单总数
+        ton = F.count(F.col('ordersn')).alias('ton')
+        # 平均优惠金额
+        ada = F.avg(F.col('da')).alias('ada')
+        # 平均每单应收
+        ara = F.avg(F.col('ra')).alias('ara')
+        # 优惠总金额
+        tda = F.sum(F.col('da')).alias('tda')
+        # 应收总金额
+        tra = F.sum(F.col('ra')).alias('tra')
+        # 得到聚合表es_agg_df
+        es_agg_df = rdp_new_df.groupBy('userId').agg(tdon,ton,ada,ara,tda,tra)
+        print("==========查看es_agg_df=========")
+        es_agg_df.show()
+
+        # 优惠订单占比
+        tdonr = (F.col('tdon') / F.col('ton')).alias('tdonr')
+        # 平均优惠金额占比
+        adar = (F.col('ada') / F.col('ara')).alias('adar')
+        # 优惠总金额占比
+        tdar = (F.col('tda') / F.col('tra')).alias('tdar')
+
+        psm_df = es_agg_df.select('userId', tdonr, adar, tdar)
+        print("==========查看psm_df=========")
+        psm_df.show()
+        # 3个占比合并得到新表psm_score_df
+        psm_score_df = psm_df.select('userId', (F.col('tdonr') + F.col('adar') + F.col('tdar')).alias('psm'))
+        print("==========查看psm_score_df=========")
+        psm_score_df.show()
+
+
+
+
+
+        # ================================================3提取特征工程=====================================
+        # 转变成向量df
+        # 3.1定义向量器
+        assembler = VectorAssembler(inputCols=['psm'],outputCol='features')
+        # 3.2得到向量df
+        ve_df = assembler.transform(psm_score_df)
+        # 3.3 查看结果
+        # print("==========查看ve_df=========")
+        ve_df.show()
+        # ==============================================4训练模型============================================
+        # 4.1定义Kmeans对象
+        kmeans = KMeans(featuresCol="features",predictionCol="prediction",k=5,seed=12)
+        # 4.2建立模型
+        model = kmeans.fit(ve_df)
+        # 4.3训练模型 得到结果
+        km_df :DataFrame = model.transform(ve_df)
+        # 4.4 查看结果
+        print("==========查看km_df=========")
+        km_df.show()
+        # ============================================== 5、模型评估 ======================================
+        #5.1 构建评估器
+        evalutor = ClusteringEvaluator(predictionCol="prediction",featuresCol='features')
+        # 5.2计算轮廓系数
+        sc = evalutor.evaluate(km_df)
+        # 5.3 查看sc 在[-1,1]之间，越大模型越好
+        print('轮廓系数', sc)
+        # ==============================6、获取模型中心点形成对应分数，并和标签表做好对应==================================
+        # 6.1取出中心点信息。结果是个大列表-------
+        centers = model.clusterCenters()
+        # 6.2查看中心点
+        print('中心点信息', centers)
+        # # 6.3将每个中心点求和，形成列表
+        centers_list = [sum(i) for i in centers]
+        # 6.4 查看centers_list
+        print(f"查看centers_list:{centers_list}")
+        # 6.5 将中心点的得分和中心点所属于的类别存入到字典中
+        # 6.5.1 空字典备用
+        score_dict = {}
+        # 6.5.2将中心分数和与km打的标记对应做成字典{标记值：中心分数和}
+        for i in range(0,len(centers_list)):
+            score_dict[f'{i}'] = centers_list[i]
+        # 6.5.3 查看score_dict
+        print("==========查看score_dict=========")
+        print(score_dict)
+        # # 6.5.4 根据分析，中心越大对应标签id越大，所以这里要将score_dict按降序排，来对应5级标签的的顺序
+        sort_dict = dict(sorted(score_dict.items(),key=lambda x:x[1],reverse=True))
+        # 6.5.5 查看sort_dict
+        print("==========查看ssort_dict=========")
+        print(sort_dict)
+        # 6.5.6 取得5级标签的id列表
+        tag5_list = tag5_df.rdd.map(lambda x:x.id).collect()
+        # 6.5.7 查看tag5_list
+        print("==========查看tag5_list=========")
+        print(tag5_list)
+        # 6.5.8 通过sort_dict和tag5_list将km打的标记和5级标签关联成一个新字典,这里直接通过中心分数和于5级标签内容进行比对，得出对应关系
+        id_prediction_dict =dict(zip(sort_dict.keys(),tag5_list))
+        # 6.5.8 查看id_prediction_dict
+        print("==========查看id_prediction_dict=========")
+        print(id_prediction_dict)
+
+        # 6.5.9 定义udf函数，利用字典换将km标记转化为5级标签id
+        @F.udf()
+        def pre_to_tagid(n):
+            '''
+            通过km标记作为key取得对应的value,就是5级标签id
+            :param n:
+            :return:
+            '''
+            return id_prediction_dict[f"{n}"]
+        #
+        # # =============================7、给km_df打上5级id标签===========================
+        new_df = km_df.select('userId',pre_to_tagid("prediction").alias("tagsId"))
+        return new_df
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    # 创建类对象
+    tag = TagCompletePsm(51,"psm价格敏感度标签计算")
+    # 调用get_es_df函数查看es_df
+    tag.get_es_df().show()
+    # 查看tag5_df
+    tag.get_tag5_df().show()
+    # 查看new_df
+    tag.get_new_df().show()
+
+    # 写入es
+    tag.write_to_es()
+
+
+
+
+
+
+
+
+----------------------决策树（分类）算法：--------------------------------
+''' classifier = DecisionTreeClassifier(featuresCol='features',
+                                        labelCol='label',
+                                        predictionCol='prediction',
+                                        maxDepth=3)
+                                        
+                                        maxDepth=3这是调整特征列的深度的
+'''
+过拟合    要减少特征列
+欠拟合    要增加特征列
+
+
+from pyspark.ml import Pipeline, PipelineModel
+from pyspark.ml.classification import DecisionTreeClassifier
+from pyspark.ml.clustering import KMeans
+from pyspark.ml.evaluation import ClusteringEvaluator, MulticlassClassificationEvaluator
+from pyspark.ml.feature import VectorAssembler, StringIndexer
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.types import *
+from pyspark import SparkContext, SparkConf
+import os
+import time
+import pyspark.sql.functions as F
+from pyspark.sql import Window as win
+import pandas as pd
+from base.tagcompelebase import TagCompeleBase
+import numpy as np
+
+os.environ['SPARK_HOME'] = '/export/server/spark'
+os.environ['PYSPARK_PYTHON'] = '/root/anaconda3/bin/python'
+os.environ['PYSPARK_DRIVER_PYTHON'] = '/root/anaconda3/bin/python'
+os.environ['JAVA_HOME'] = '/export/server/jdk1.8.0_241'
+
+# 创建子类，继承父类
+class TagCompletePsm(TagCompeleBase):
+    # 复写get_new_df
+    def get_new_df(self):
+        # 1、获得5级标签tag5_df
+        tag5_df = self.get_tag5_df()
+        # 2、获得原始数据es_df
+        es_df = self.get_es_df()
+        # 将商品属性按规则打上标签
+        lab = F.when((F.col("ogcolor") == ("樱花粉"))
+                  | (F.col("ogcolor") == ("白色"))
+                  | (F.col("ogcolor") == ("香槟色"))
+                  | (F.col("ogcolor") == ("香槟金"))
+                  | (F.col("producttype") == ("料理机"))
+                  | (F.col("producttype") == ("挂烫机"))
+                  | (F.col("producttype") == ("吸尘器/除[螨仪")), 1) \
+            .otherwise(0)
+        eslb_df = es_df.withColumn('label',lab)
+        # 查看结果
+        eslb_df.show()
+
+        #3、读取tfec_tbl_orders，取字段ordersn、memberid
+        spark = self.get_spark()
+        od_df = spark.read.format("es")\
+            .option('es.resource', "tfec_tbl_orders") \
+            .option('es.nodes', "up01:9200") \
+            .option('es.read.field.include', "ordersn,memberid") \
+            .load()
+        # 查看od_df
+        od_df.show()
+        # 4.将两表合在一起
+        two_df = od_df.join(eslb_df,on=od_df.ordersn == eslb_df.cordersn,how='left').dropna()
+        # 查看two_df结果
+        two_df.show()
+
+        # 5、将two_df特征列数字化
+        # 5.1 构建数字转化器
+        color_indexer = StringIndexer(inputCol='ogcolor',outputCol='color')
+        type_indexer = StringIndexer(inputCol="producttype",outputCol="type")
+        # 5.2 执行转化
+        two_co_df = color_indexer.fit(two_df).transform(two_df)
+        two_co_df.show()
+        two_fi_df :DataFrame = type_indexer.fit(two_co_df).transform(two_co_df)
+        two_fi_df.show()
+        # 5.3 得到最终数据表
+        two_su_df = two_fi_df.select(F.col('memberid').alias("userId"),'color',"type",'label')
+        # 查看结果
+        two_su_df.show()
+
+
+
+
+        # ！！！！！！！！！！！！！！！！！！！以下是先用少量数据训练模型，训练好后保存模型，再用模型来跑全量数据！！！！！！！！！！！！！！！！！！！！！！！！
+
+
+        # ================================================3提取特征工程=====================================
+        # (train_df, test_df) = two_su_df.randomSplit([0.8, 0.2], seed=12)
+        # # 转变成向量df
+        # # 3.1定义向量器
+        # assembler = VectorAssembler(inputCols=['color',"type"],outputCol='features')
+        #
+        #
+        # # # 3.2得到向量df
+        # # ve_df = assembler.transform(two_su_df)
+        # # # 3.3 查看结果
+        # # # print("==========查看ve_df=========")
+        # # ve_df.show()
+        #
+        #
+        # # ==============================================4训练模型============================================
+        # # 4.1 将数据分成训练集和测试级
+        # # (train_df, test_df) = ve_df.randomSplit([0.8, 0.2],seed=12)
+        #
+        # # 4.2构建决策树分类器
+        # classifier = DecisionTreeClassifier(featuresCol='features',labelCol='label',predictionCol='prediction')
+        # # 建立管道
+        # pipeline = Pipeline().setStages([assembler,classifier])
+        # # 建立模型
+        # model = pipeline.fit(train_df)
+        # # 训练模型
+        # mdtr_df = model.transform(train_df)
+        # # 查看结果
+        # mdtr_df.show()
+        #
+        # # 进行测试集
+        # mdtes_df = pipeline.fit(test_df).transform(test_df)
+        # # 查看结果
+        # mdtes_df.show()
+        #
+        # #============================================ 5、评估模型=================================================
+        # # 5.1建立评估器
+        # evaluator = MulticlassClassificationEvaluator(predictionCol="prediction",labelCol="label")
+        # # 5.2 对训练结果进行评估，得到分数
+        # md_score = evaluator.evaluate(mdtr_df)
+        # # 查看评估分数
+        # print(f"训练集评估分数：{md_score}")
+        #
+        # # 5.3 对测试结果进行评估，得到分数
+        # mdtest_score = evaluator.evaluate(mdtes_df)
+        # # 查看评估分数
+        # print(f"训练集评估分数：{mdtest_score}")
+        #
+        #
+        # # ！！！！！！！！！！！！！！！！！！！！！6、模型保存！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+        # model.save("hdfs://up01:8020/model/ShopGender'")
+
+
+
+
+
+        # ！！！！！！！！！！！！！！！！！！！！7、将所有数据来一遍预测得到result1_df！！！！！！！！！！！！！！！！！！！！！
+        # 引入模型
+        model = PipelineModel.load("hdfs://up01:8020/model/ShopGender'")
+        # 进行预测
+        result1_df :DataFrame = model.transform(two_su_df).select('userId',"prediction")
+        # 查看结果
+        result1_df.show()
+
+
+
+
+
+
+        # # =============================7、给km_df打上5级id标签===========================
+        # 7.1 标签计算
+
+        # 根据id分组，算0对应的数量，1对应的数量，总的数量
+        fe_cn = F.sum(F.when(F.col("prediction") == 0,1)).alias("fe_cn1")
+        wo_cn = F.sum(F.when(F.col("prediction") == 1,1)).alias("wo_cn1")
+        all_cm = F.count("prediction").alias("all_cm1")
+
+        # 计算购买商品男女性占比决对购物性别
+        # 定义函数
+        @F.udf()
+        def to_tag5id(fe_cn,wo_cn,all_cm):
+            a1 = fe_cn / all_cm
+            b1 = wo_cn / all_cm
+            if a1 >= 0.6 :
+                return 58
+            elif b1 >= 0.6:
+                return 58
+            else:
+                return 60
+
+
+        # 调用以上函数得到result_df2
+        result_df2 = result1_df.groupBy("userId").agg(fe_cn,wo_cn,all_cm)
+        result_df2.show()
+
+        new_df = result_df2.select("userId",to_tag5id('fe_cn1','wo_cn1','all_cm1').alias("tagsId"))
+        # 查看结果
+        new_df.show()
+        # 返回结果
+        return new_df
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    # 创建类对象
+    tag = TagCompletePsm(57,"购物性别标签计算")
+    # 调用get_es_df函数查看es_df
+    tag.get_es_df().show()
+    # 查看tag5_df
+    tag.get_tag5_df().show()
+    # # 查看new_df
+    # tag.get_new_df()
+    # 写入es
+    tag.write_to_es()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------elasticsearch使用--------------------------------------------
+ElasticSearch中的映射（Mapping）相对于mysql中的schame(约束，起始就是字段名，数据类型 等)
+
+
+
+
+
+
+
+
+
+
+
+------------------------------flume使用-----------------------------------------------
+flume-ng version 查看flume版本
+
+flume启动
+nohup flume-ng agent -n pro -c ./ -f nginxlog2kafka.properties & 
+nohup flume-ng agent -n 脚本中agent的名字 -c 脚本所在位置 -f 脚本名 & 
+
+nohup flume-ng agent -n pro -c /mytest -f nginxlog2kafka.properties & 
+
+
+
+脚本实例1：
+创建文件：nginxlog2kafka.properties
+'''
+pro.sources = s1
+pro.channels = c1
+pro.sinks = k1
+
+pro.sources.s1.type = TAILDIR
+pro.sources.s1.filegroups = f1
+pro.sources.s1.filegroups.f1 = /tmp/UserProfile/online/datacollection/source_data/user-event-20230615
+pro.sources.s1.positionFile = /export/data/flume/taildir_position.json
+pro.sources.s1.batchSize = 10
+
+pro.channels.c1.type = memory
+pro.channels.c1.capacity = 1000
+pro.channels.c1.transactionCapacity = 100
+
+pro.sinks.k1.type = org.apache.flume.sink.kafka.KafkaSink
+pro.sinks.k1.kafka.topic = tfec_user_event
+pro.sinks.k1.kafka.bootstrap.servers = up01:9092
+pro.sinks.k1.kafka.flumeBatchSize = 20
+pro.sinks.k1.kafka.producer.acks = 1
+pro.sinks.k1.kafka.producer.compression.type = snappy
+
+pro.sources.s1.channels = c1
+pro.sinks.k1.channel = c1
+'''
+
+
+
+
+
+
+
+
+
 
 
 
